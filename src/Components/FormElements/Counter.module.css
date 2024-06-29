@@ -1,0 +1,28 @@
+.CounterDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  border: 1.5px solid rgba(45, 59, 78, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.CounterDiv > * {
+  color: rgb(150, 150, 150);
+  font-size: 14px !important;
+}
+
+.IconDiv {
+  width: fit-content;
+}
+
+.Count {
+  width: 30px;
+  text-align: center;
+  border: none;
+  outline: none;
+}

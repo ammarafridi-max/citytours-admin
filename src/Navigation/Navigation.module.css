@@ -1,0 +1,52 @@
+.Navigation {
+  position: absolute;
+  background-color: #032539;
+  height: 100vh;
+  width: 100%;
+  border-radius: 0 6px 6px 0;
+  overflow: hidden;
+  padding: 150px 20px;
+}
+
+.Btn {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 15px;
+  color: white;
+  text-transform: capitalize;
+}
+
+.Btn:hover {
+  background-color: #0e9ff2;
+}
+
+.Dropdown {
+  display: flex;
+  justify-content: space-between;
+  text-decoration: none;
+  align-items: center;
+  height: 100%;
+}
+
+.Hidden {
+  height: 0;
+  overflow: hidden;
+}
+
+.Up {
+  transform: rotate(180deg);
+  transition-duration: 0.5s;
+}
+
+.Down {
+  transform: rotate(0deg);
+  transition-duration: 0.5s;
+}
+
+.Options button {
+  padding: 10px 0px 10px 35px;
+}

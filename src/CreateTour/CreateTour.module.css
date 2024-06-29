@@ -1,0 +1,37 @@
+.AddBtn {
+  width: 100%;
+  padding: 8px;
+  margin: 0;
+  font-size: 15px;
+  background-color: #0e9ff2;
+  border: 1px solid #0e9ff2;
+  color: white;
+  border-radius: var(--input-border-radius);
+}
+
+.RemoveBtn {
+  font-size: 16px;
+  border: none;
+  background-color: transparent;
+  color: red;
+  border-radius: 5px;
+  margin-left: 3px;
+}
+
+.MoveUpBtn {
+  font-size: 16px;
+  border: none;
+  background-color: transparent;
+  color: black;
+  border-radius: 5px;
+  margin-left: 3px;
+}
+
+.InclusionsList {
+  margin: 0px 0px;
+  padding: 0px 10px;
+}
+
+.InclusionsList li {
+  margin-bottom: 10px;
+}

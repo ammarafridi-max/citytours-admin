@@ -1,0 +1,58 @@
+.BlogCard {
+  width: 100%;
+  padding: 0px;
+}
+
+.BlogCardInterior {
+  width: 100%;
+  border: 1px solid rgb(200, 200, 200);
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ImgDiv {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: black;
+  padding: 0;
+}
+
+.Img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.Content {
+  padding: 20px 10px;
+}
+
+.Title {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.Btn {
+  width: 50%;
+}
+
+.Btn button {
+  width: 100%;
+  border: none;
+  font-size: 13px;
+  border-radius: 5px;
+  padding: 5px 0;
+}
+
+.UpdateBtn {
+  background-color: #408933;
+  color: white;
+}
+
+.DeleteBtn {
+  background-color: #cf142b;
+  color: white;
+}

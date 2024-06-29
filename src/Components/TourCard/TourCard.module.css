@@ -1,0 +1,54 @@
+.Card {
+  border-radius: 10px;
+  border: 1px solid rgb(200, 200, 200);
+  overflow: hidden;
+}
+
+.ImgDiv {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: black;
+}
+
+.Img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.Content {
+  padding: 15px;
+}
+
+.Title {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.Btn {
+  width: 48%;
+  font-size: 13px;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 0;
+}
+
+.UpdateBtn {
+  width: 100%;
+  padding: 4px 0;
+  border-radius: 3px;
+  color: white;
+  background-color: #408933;
+  border: 2px solid #408933;
+}
+
+.DeleteBtn {
+  width: 100%;
+  padding: 4px 0;
+  border-radius: 3px;
+  background-color: #cf142b;
+  color: white;
+  border: 2px solid #cf142b;
+}

@@ -1,0 +1,9 @@
+.Label {
+  width: 100%;
+  overflow: hidden;
+  font-size: 14.5px;
+  padding: 0 0px;
+  color: #0e9ff2;
+  text-transform: uppercase;
+  font-weight: 600;
+}

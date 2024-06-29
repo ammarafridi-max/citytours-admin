@@ -1,0 +1,22 @@
+.SelectDiv {
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  background-color: rgb(235, 235, 235);
+  border-radius: var(--input-border-radius);
+  overflow: hidden;
+  padding: 0 20px;
+}
+
+.Select {
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  background-color: transparent;
+  padding: 10px 0;
+  outline: none;
+}
+
+.Select:focus-visible ~ .SelectDiv {
+  background-color: rgb(235, 235, 235);
+}

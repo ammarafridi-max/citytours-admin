@@ -1,0 +1,36 @@
+.AlertBox {
+  width: 100%;
+  padding: 10px 10px;
+  margin-bottom: 20px !important;
+}
+
+.Success {
+  border: 1px solid #c3e6cb;
+  background-color: #d4edda;
+  border-radius: 5px;
+}
+
+.Success p,
+.Success .Icon {
+  color: #155724;
+}
+
+.Danger {
+  border: 1px solid #f5c6cb;
+  background-color: #f8d7da;
+  border-radius: 5px;
+}
+
+.Danger p,
+.Danger .Icon {
+  color: #721c24;
+}
+
+.Text {
+  margin: 0;
+}
+
+.Icon {
+  font-size: 25px;
+  cursor: pointer;
+}
