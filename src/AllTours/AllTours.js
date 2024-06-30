@@ -1,9 +1,9 @@
-import styles from "./Tours.module.css";
+import styles from "./AllTours.module.css";
 import TourCard from "../Components/TourCard/TourCard";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 
-export default function Tours() {
+export default function AllTours() {
   const [tours, setTours] = useState([]);
 
   useEffect(() => {

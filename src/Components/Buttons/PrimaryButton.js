@@ -1,29 +1,37 @@
-export default function PrimaryButton(props) {
+import styles from "./PrimaryButton.module.css";
+
+export default function PrimaryButton({
+  width,
+  mt,
+  mb,
+  my,
+  href,
+  className,
+  type,
+  onClick,
+  disabled,
+  children,
+}) {
   const linkStyle = {
     width: "fit-content",
   };
 
   const btnStyle = {
-    backgroundColor: "#0E9FF2",
-    fontSize: "15px",
-    width: props.width === "100%" && "100%",
-    padding: "8px 30px",
-    border: "none",
-    color: "white",
-    borderRadius: "3px",
-    marginTop: props.mt || props.my,
-    marginBottom: props.mb || props.my,
+    width: width === "100%" && "100%",
+    marginTop: mt || my,
+    marginBottom: mb || my,
   };
 
   return (
-    <a href={props.href} style={linkStyle}>
+    <a href={href} style={linkStyle}>
       <button
         style={btnStyle}
-        className={props.className}
-        type={props.type}
-        onClick={props.onClick}
+        className={`${className} ${styles.Btn}`}
+        type={type}
+        onClick={onClick}
+        disabled={disabled}
       >
-        {props.children}
+        {children}
       </button>
     </a>
   );

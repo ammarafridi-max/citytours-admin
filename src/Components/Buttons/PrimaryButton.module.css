@@ -1,0 +1,12 @@
+.Btn {
+  background-color: var(--primary-color);
+  font-size: 15px;
+  padding: 8px 30px;
+  border: none;
+  color: white;
+  border-radius: 3px;
+}
+
+.Btn:disabled {
+  opacity: 0.5;
+}
