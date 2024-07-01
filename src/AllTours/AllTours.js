@@ -2,6 +2,7 @@ import styles from "./AllTours.module.css";
 import TourCard from "../Components/TourCard/TourCard";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import { fetchAllTours } from "../services/tourService";
 
 export default function AllTours() {
   const [tours, setTours] = useState([]);
@@ -9,9 +10,7 @@ export default function AllTours() {
   useEffect(() => {
     async function fetchTours() {
       try {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/tours`);
-        console.log(res);
-        const data = await res.json();
+        const data = await fetchAllTours();
         console.log(data);
         setTours(data);
       } catch (error) {}

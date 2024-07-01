@@ -9,90 +9,52 @@ import TextEditor from "../TextEditor/TextEditor";
 import PrimaryButton from "../Components/Buttons/PrimaryButton";
 import AlertBox from "../Components/AlertBox/AlertBox";
 import DeleteButton from "../Components/Buttons/DeleteButton";
-import Modal from "../Components/Modal/Modal";
+import DeleteModal from "../Components/DeleteModal/DeleteModal";
+import {
+  fetchTour,
+  createTour,
+  updateTour,
+  deleteTour,
+  uploadToCloudinary,
+} from "../services/tourService";
+import { today } from "../services/dates";
 
 export default function TourForm() {
-  const [tourData, setTourData] = useState({
-    name: "",
-    url: "",
-    image: "",
-    description: "",
-    duration: "",
-    location: {
-      city: "",
-      country: "",
-    },
-    age: {
-      adults: "18 - 60",
-      children: "2 - 17",
-      infants: "0 - 2",
-    },
-    price: {
-      adults: 0,
-      children: 0,
-      infants: 0,
-    },
-    inclusions: [],
-    exclusions: [],
-    additionalInformation: "",
-  });
-
-  const [newTourData, setNewTourData] = useState({ ...tourData });
   const { url } = useParams();
   const navigate = useNavigate();
+  const [alert, setAlert] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [tourData, setTourData] = useState(initialTourState);
+  const [newTourData, setNewTourData] = useState({ ...tourData });
   const [inclusionText, setInclusionText] = useState("");
   const [exclusionText, setExclusionText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const descriptionRef = useRef(null);
   const additionalInformationRef = useRef(null);
-  const [alert, setAlert] = useState(null);
-  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (url) {
-      async function fetchTour() {
+      async function loadTour() {
+        setIsLoading(true);
         try {
-          setIsLoading(true);
-          const res = await fetch(
-            `${process.env.REACT_APP_BACKEND_URL}/tours/${url}`
-          );
-          if (res.status === 404) throw new Error("Tour not found");
-          const data = await res.json();
+          const data = await fetchTour(url);
           setTourData(data);
           setNewTourData(data);
+          if (descriptionRef.current)
+            descriptionRef.current.setContent(data.description);
+          if (additionalInformationRef.current)
+            additionalInformationRef.current.setContent(
+              data.additionalInformation
+            );
         } catch (error) {
           setAlert(<AlertBox type="error">{error.message}</AlertBox>);
-          console.log(error);
         } finally {
           setIsLoading(false);
         }
       }
-      fetchTour();
+      loadTour();
     } else {
-      setNewTourData({
-        name: "",
-        url: "",
-        image: "",
-        description: "",
-        duration: "",
-        location: {
-          city: "",
-          country: "",
-        },
-        age: {
-          adults: "18 - 60",
-          children: "2 - 17",
-          infants: "0 - 2",
-        },
-        price: {
-          adults: 0,
-          children: 0,
-          infants: 0,
-        },
-        inclusions: [],
-        exclusions: [],
-        additionalInformation: "",
-      });
+      setNewTourData(initialTourState);
     }
   }, [url]);
 
@@ -159,87 +121,53 @@ export default function TourForm() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setNewTourData((prevData) => ({
-      ...prevData,
-      image: file,
-    }));
+    setNewTourData((prevData) => ({ ...prevData, image: file }));
   };
 
-  async function uploadToCloudinary(file) {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append(
-      "upload_preset",
-      `${process.env.REACT_APP_CLOUDINARY_TOUR_PRESET}`
-    );
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
-      { method: "post", body: formData }
-    );
-    const data = await response.json();
-    return data.secure_url;
-  }
-
-  const handleForm = async (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
-      setIsLoading(true);
       let imageUrl = "";
       if (newTourData.image && newTourData.image instanceof File) {
         imageUrl = await uploadToCloudinary(newTourData.image);
       }
 
-      const updatedTourData = {
+      const formData = {
         ...newTourData,
         image: imageUrl || newTourData.image,
-        description: descriptionRef.current
-          ? descriptionRef.current.getContent()
-          : "",
-        additionalInformation: additionalInformationRef.current
-          ? additionalInformationRef.current.getContent()
-          : "",
+        description: descriptionRef.current.getContent(),
+        additionalInformation: additionalInformationRef.current.getContent(),
+        dateUpdated: today,
       };
-
-      const endpoint = url
-        ? `${process.env.REACT_APP_BACKEND_URL}/tours/update/${tourData.url}`
-        : `${process.env.REACT_APP_BACKEND_URL}/tours/create`;
-      const method = url ? "POST" : "POST";
-
-      const res = await fetch(endpoint, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedTourData),
-      });
-
-      if (!res.ok) {
-        const errorText = url
-          ? "Tour could not be updated"
-          : "Tour could not be added";
-        throw new Error(errorText);
+      if (url) {
+        await updateTour(url, formData);
+        setAlert(
+          <AlertBox type="success">Tour updated successfully.</AlertBox>
+        );
+      } else {
+        await createTour(formData);
+        setAlert(
+          <AlertBox type="success">Tour created successfully.</AlertBox>
+        );
       }
-
-      const data = await res.json();
-      const successMessage = url
-        ? "Tour updated successfully."
-        : "Tour added successfully.";
-      setAlert(<AlertBox type="success">{successMessage}</AlertBox>);
-
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
+      setTimeout(() => navigate("/"), 3000);
     } catch (error) {
       setAlert(<AlertBox type="error">{error.message}</AlertBox>);
-      console.log(error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDeleteTour = async (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
-    setShowModal(true);
+    try {
+      await deleteTour(url);
+      setAlert(<AlertBox type="success">Tour deleted successfully.</AlertBox>);
+      setTimeout(() => navigate("/tours"), 3000);
+    } catch (error) {
+      setAlert(<AlertBox type="error">{error.message}</AlertBox>);
+    }
   };
 
   return (
@@ -249,7 +177,7 @@ export default function TourForm() {
       </Helmet>
       <PrimarySection>
         <h1>{url ? "Update Tour" : "Create Tour"}</h1>
-        <form onSubmit={handleForm}>
+        <form onSubmit={handleFormSubmit}>
           <div className="row mb-5">
             <h2>Basic Details</h2>
             {url && (
@@ -257,7 +185,17 @@ export default function TourForm() {
                 groupType="long"
                 label="Current Image"
                 type="text"
-                value={newTourData.image}
+                value={tourData.image}
+                name="currentImage"
+                disabled
+              />
+            )}
+            {!url && (
+              <InputGroup
+                groupType="long"
+                label="Date Created"
+                type="text"
+                value={tourData.dateCreated}
                 name="currentImage"
                 disabled
               />
@@ -407,7 +345,7 @@ export default function TourForm() {
             <h2>Description</h2>
             <TextEditor
               onInit={(_evt, editor) => (descriptionRef.current = editor)}
-              initialValue={url ? tourData.description : ""}
+              initialValue={url ? newTourData.description : ""}
             />
           </div>
 
@@ -417,18 +355,19 @@ export default function TourForm() {
               onInit={(_evt, editor) =>
                 (additionalInformationRef.current = editor)
               }
-              initialValue={url ? tourData.additionalInformation : ""}
+              initialValue={url ? newTourData.additionalInformation : ""}
             />
           </div>
 
           {alert}
 
           {url && showModal && (
-            <Modal
+            <DeleteModal
+              item={newTourData.name}
               onCancel={() => {
                 setShowModal(false);
               }}
-              onDelete={handleDeleteTour}
+              onDelete={handleDelete}
             />
           )}
 
@@ -456,12 +395,7 @@ export default function TourForm() {
                 Loading
               </PrimaryButton>
             ) : (
-              <PrimaryButton
-                type="submit"
-                disabled={
-                  JSON.stringify(tourData) === JSON.stringify(newTourData)
-                }
-              >
+              <PrimaryButton type="submit" disabled={tourData === newTourData}>
                 Submit
               </PrimaryButton>
             )}
@@ -471,3 +405,19 @@ export default function TourForm() {
     </>
   );
 }
+
+const initialTourState = {
+  dateCreated: today,
+  dateUpdated: "",
+  name: "",
+  url: "",
+  image: "",
+  description: "",
+  duration: "",
+  location: { city: "", country: "" },
+  age: { adults: "18 - 60", children: "2 - 17", infants: "0 - 2" },
+  price: { adults: 0, children: 0, infants: 0 },
+  inclusions: [],
+  exclusions: [],
+  additionalInformation: "",
+};

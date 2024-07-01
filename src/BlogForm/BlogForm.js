@@ -171,6 +171,17 @@ export default function BlogForm() {
           </div>
         </div>
 
+        {url && (
+          <div className="row mb-3 align-items-center">
+            <div className="col-2">
+              <Label>Last Updated</Label>
+            </div>
+            <div className="col-10">
+              <Input type="text" value={blogData.dateUpdated} disabled={true} />
+            </div>
+          </div>
+        )}
+
         <div className="row mb-3 align-items-center">
           <div className="col-2">
             <Label>Title</Label>
