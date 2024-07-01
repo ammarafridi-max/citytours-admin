@@ -1,6 +1,5 @@
 import BlogCard from "../Components/BlogCard/BlogCard";
 import { useEffect, useState } from "react";
-import UpdateBlog from "../UpdateBlog/UpdateBlog";
 
 export default function AllBlogs() {
   const [blogs, setBlogs] = useState([]);

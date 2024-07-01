@@ -2,8 +2,11 @@
 
 :root {
   --primary-color: #0e9ff2;
+  --primary-color-hover: #0b87ce;
   --primary-color-light: #edf8fe;
   --primary-color-dark: #053e5e;
+  --danger-color: #cf142b;
+  --danger-color-hover: #ab1124;
   --input-border-radius: 3px;
 }
 

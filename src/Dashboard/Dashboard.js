@@ -6,7 +6,6 @@ export default function Dashboard() {
   return (
     <PrimarySection>
       <h1>Home</h1>
-      <PrimaryButton href="/create-tour">Add Tour</PrimaryButton>
     </PrimarySection>
   );
 }
