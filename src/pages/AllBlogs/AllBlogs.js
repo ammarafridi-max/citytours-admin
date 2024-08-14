@@ -1,28 +1,13 @@
 import BlogCard from "../../components/BlogCard/BlogCard";
-import { useEffect, useState } from "react";
+import Loading from "../../components/Loading/Loading";
+import { useBlogs } from "../../hooks/useBlogs";
 
 export default function AllBlogs() {
-  const [blogs, setBlogs] = useState([]);
-
-  useEffect(() => {
-    async function getBlogs() {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/blogs`
-        );
-        const data = await response.json();
-        setBlogs(data);
-        console.log(data);
-      } catch {
-        console.log("error");
-      }
-    }
-
-    getBlogs();
-  }, []);
+  const { blogs, isLoading } = useBlogs();
 
   return (
     <>
+      {isLoading && <Loading />}
       <h1>Blogs</h1>
       <div className="row">
         {blogs.map((blog) => {

@@ -1,22 +1,9 @@
-import styles from "./AllTours.module.css";
 import TourCard from "../../components/TourCard/TourCard";
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { fetchAllTours } from "../../services/tourServices";
+import { useTours } from "../../hooks/useTours";
 
 export default function AllTours() {
-  const [tours, setTours] = useState([]);
-
-  useEffect(() => {
-    async function fetchTours() {
-      try {
-        const data = await fetchAllTours();
-        console.log(data);
-        setTours(data);
-      } catch (error) {}
-    }
-    fetchTours();
-  }, []);
+  const { tours } = useTours();
 
   return (
     <>

@@ -24,7 +24,8 @@ export const initialTourState = {
   additionalInformation: "",
 };
 
-export function useTourForm(url) {
+export function useTours(url) {
+  const [tours, setTours] = useState([]);
   const [tourData, setTourData] = useState(initialTourState);
   const [isLoading, setIsLoading] = useState(false);
   const descriptionRef = useRef(null);
@@ -32,6 +33,26 @@ export function useTourForm(url) {
   const [alert, setAlert] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
+  // ---------- GET ALL TOURS ----------
+
+  useEffect(() => {
+    async function fetchTours() {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/tours`);
+        const data = await res.json();
+        setTours(data);
+      } catch (error) {
+        alert(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchTours();
+  }, []);
+
+  // ---------- FORM FUNCTIONS ----------
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -110,6 +131,7 @@ export function useTourForm(url) {
   };
 
   return {
+    tours,
     tourData,
     isLoading,
     alert,
