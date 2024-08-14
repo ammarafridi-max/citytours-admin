@@ -1,0 +1,7 @@
+.mainContent {
+  width: 82.5%;
+  margin-left: 17.5%;
+  padding: 100px 40px;
+  height: 100vh;
+  overflow-y: scroll;
+}

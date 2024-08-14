@@ -17,6 +17,7 @@ export default function InputGroup(props) {
               value={props.value}
               onChange={props.onChange}
               placeholder={props.placeholder}
+              disabled={props.disabled}
             />
           </div>
         </div>
@@ -30,6 +31,7 @@ export default function InputGroup(props) {
             value={props.value}
             onChange={props.onChange}
             placeholder={props.placeholder}
+            disabled={props.disabled}
           />
         </div>
       )}

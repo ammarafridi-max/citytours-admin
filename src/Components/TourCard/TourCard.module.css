@@ -1,54 +1,106 @@
-.Card {
-  border-radius: 10px;
-  border: 1px solid rgb(200, 200, 200);
-  overflow: hidden;
+.CardExterior {
+  width: 100%;
+  padding: 0 10px;
+  margin-bottom: 30px;
 }
 
-.ImgDiv {
+.Card {
+  border-radius: 20px;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(230, 230, 230, 1);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(230, 230, 230, 1);
+  box-shadow: 0px 0px 10px 0px rgba(230, 230, 230, 1);
+  overflow: hidden;
+  transition-duration: 0.3s;
+}
+
+.Card:hover {
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(210, 210, 210, 1);
+  -moz-box-shadow: 0px 0px 15px 0px rgba(210, 210, 210, 1);
+  box-shadow: 0px 0px 15px 5px rgba(210, 210, 210, 1);
+  transition-duration: 0.3s;
+  cursor: pointer;
+}
+
+.Card:hover .Image {
+  transform: scale(1.1);
+  transition-duration: 0.3s;
+}
+
+.ImageDiv {
   width: 100%;
   aspect-ratio: 16 / 9;
-  background-color: black;
+  overflow: hidden;
+  border-radius: 0 0;
 }
 
-.Img {
+.Image {
+  object-fit: cover;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  transition-duration: 0.2s;
 }
 
-.Content {
-  padding: 15px;
+.TourDetail {
+  padding: 30px 30px;
 }
 
 .Title {
-  font-size: 18px;
-  font-weight: 600;
-  padding: 0;
+  width: 100%;
+  overflow: hidden;
+  color: black;
+  font-size: 17px;
+  font-weight: 500;
   margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
-.Btn {
-  width: 48%;
-  font-size: 13px;
-  border: none;
-  border-radius: 3px;
-  padding: 5px 0;
+/* .Subtitle {
+  font-size: 12px;
+  color: grey;
+  text-transform: uppercase;
+  font-weight: 500;
+} */
+
+.IconDiv {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 0;
 }
 
-.UpdateBtn {
-  width: 100%;
-  padding: 4px 0;
-  border-radius: 3px;
-  color: white;
-  background-color: #408933;
-  border: 2px solid #408933;
+.IconDiv:nth-of-type(2) {
+  margin-bottom: 15px;
 }
 
-.DeleteBtn {
-  width: 100%;
-  padding: 4px 0;
-  border-radius: 3px;
-  background-color: #cf142b;
-  color: white;
-  border: 2px solid #cf142b;
+.Icon {
+  color: var(--secondary-color);
+  font-size: 22px;
+  margin-right: 10px;
+}
+
+.Duration,
+.Location {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(100, 100, 100, 1);
+}
+
+.Price {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  color: black;
+  margin-top: -2px;
+}
+
+@media only screen and (max-width: 991px) {
+  .CardExterior {
+    width: 100%;
+    margin-bottom: 40px;
+    padding: 0;
+  }
+  .TourDetail {
+    padding: 25px 35px;
+  }
 }

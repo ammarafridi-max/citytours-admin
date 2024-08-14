@@ -1,31 +1,33 @@
+import { useState } from "react";
 import styles from "./BlogCard.module.css";
+import { Link } from "react-router-dom";
 
-export default function BlogCard(props) {
+function BlogCard({ title, img, description, tag, dateCreated, url }) {
+  const blog = {
+    title: "How to build your dream holiday package?",
+    description:
+      "It doesn't have to be hard. Just stick to basics and you'll create your dream package. In this guide, you'll learn how to create your dream package.",
+    category: "Travel",
+    dateWritten: "March 13, 2023",
+  };
+
   return (
-    <div className={`${styles.BlogCard} row`}>
-      <div className={styles.BlogCardInterior}>
-        <div className={styles.ImgDiv}>
-          <img className={styles.Img} src={props.src} />
+    <div className={styles.blogCardDiv}>
+      <Link to={`/blogs/${url}`}>
+        <div className={styles.blogCardImgDiv}>
+          <img src={img} className={styles.blogCardImg} />
         </div>
-        <div className={styles.Content}>
-          <p className={styles.Title}>{props.title}</p>
-          <div className="row justify-content-between">
-            <a href={`/blogs/update/${props.url}`} className={styles.Btn}>
-              <button className={` ${styles.UpdateBtn}`} onClick={props.onEdit}>
-                Edit
-              </button>
-            </a>
-            <a href="#" className={styles.Btn}>
-              <button
-                className={`${styles.DeleteBtn}`}
-                onClick={props.onDelete}
-              >
-                Delete
-              </button>
-            </a>
-          </div>
+        <div className={styles.blogCardContent}>
+          <div className={styles.blogCardDate}>{dateCreated}</div>
+          <div className={styles.blogCardPill}>{tag}</div>
+          <h4 className={styles.blogCardHeading}>{title}</h4>
+
+          {/* <img className={styles.blogAuthorImage} />
+                <h6 className={styles.blogAuthorName}>Ammar Afridi</h6> */}
         </div>
-      </div>
+      </Link>
     </div>
   );
 }
+
+export default BlogCard;

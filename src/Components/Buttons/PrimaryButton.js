@@ -30,6 +30,7 @@ export default function PrimaryButton({
         type={type}
         onClick={onClick}
         disabled={disabled}
+        type={type}
       >
         {children}
       </button>

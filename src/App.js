@@ -1,44 +1,49 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navigation from "./Navigation/Navigation";
-import Dashboard from "./Dashboard/Dashboard";
-import AllTours from "./AllTours/AllTours";
-import AllBlogs from "./AllBlogs/AllBlogs";
-import AllDestinations from "./AllDestinations/AllDestinations";
-import CreateDestination from "./CreateDestination/CreateDestination";
-import TourForm from "./TourForm/TourForm";
-import BlogForm from "./BlogForm/BlogForm";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import BlogForm from "./pages/BlogForm/BlogForm";
+import PageLayout from "./layout/PageLayout/PageLayout";
+
+// Tours
+import AllTours from "./pages/AllTours/AllTours";
+import ReadTour from "./pages/ReadTour/ReadTour";
+import CreateTour from "./pages/CreateTour/CreateTour";
+import UpdateTour from "./pages/UpdateTour/UpdateTour";
+
+// Destinations
+import AllDestinations from "./pages/AllDestinations/AllDestinations";
+import ReadDestination from "./pages/ReadDestination/ReadDestination";
+import CreateDestination from "./pages/CreateDestination/CreateDestination";
+import UpdateDestination from "./pages/UpdateDestination/UpdateDestination";
+
+// Blogs
+import AllBlogs from "./pages/AllBlogs/AllBlogs";
+import ReadBlog from "./pages/ReadBlog/ReadBlog";
+import CreateBlog from "./pages/CreateBlog/CreateBlog";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className={`m-0 p-0 row`}>
-        <div
-          className="col-2 p-0"
-          style={{ position: "fixed", height: "100vh", width: "16.6667%" }}
-        >
-          <Navigation />
-        </div>
-        <div
-          className={`col-10 offset-2 px-5 py-5`}
-          style={{ marginLeft: "16.6667%" }}
-        >
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/tours" element={<AllTours />} />
-            <Route path="/tours/create" element={<TourForm />} />
-            <Route path="/tours/update/:url" element={<TourForm />} />
-            <Route path="destinations" element={<AllDestinations />} />
-            <Route
-              path="/destinations/create"
-              element={<CreateDestination />}
-            />
-            <Route path="/blogs" element={<AllBlogs />} />
-            <Route path="/blogs/create" element={<BlogForm />} />
-            <Route path="/blogs/update/:url" element={<BlogForm />} />
-          </Routes>
-        </div>
-      </div>
+      <PageLayout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/tours" element={<AllTours />} />
+          <Route path="/tours/:url" element={<ReadTour />} />
+          <Route path="/tours/create" element={<CreateTour />} />
+          <Route path="/tours/update/:url" element={<UpdateTour />} />
+          <Route path="/destinations" element={<AllDestinations />} />
+          <Route path="/destinations/:url" element={<ReadDestination />} />
+          <Route path="/destinations/create" element={<CreateDestination />} />
+          <Route
+            path="/destinations/update/:url"
+            element={<UpdateDestination />}
+          />
+          <Route path="/blogs" element={<AllBlogs />} />
+          <Route path="/blogs/:url" element={<ReadBlog />} />
+          <Route path="/blogs/create" element={<CreateBlog />} />
+          <Route path="/blogs/update/:url" element={<BlogForm />} />
+        </Routes>
+      </PageLayout>
     </BrowserRouter>
   );
 }

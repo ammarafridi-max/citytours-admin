@@ -1,7 +1,6 @@
 import DeleteButton from "../Buttons/DeleteButton";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import styles from "./DeleteModal.module.css";
-import { useState } from "react";
 
 export default function DeleteModal({ onCancel, onDelete, item }) {
   return (

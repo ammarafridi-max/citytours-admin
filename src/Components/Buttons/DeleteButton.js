@@ -1,4 +1,5 @@
 import styles from "./DeleteButton.module.css";
+import { FaTrash } from "react-icons/fa";
 
 export default function DeleteButton({
   width,
@@ -31,7 +32,7 @@ export default function DeleteButton({
         onClick={onClick}
         disabled={disabled}
       >
-        {children}
+        <FaTrash />
       </button>
     </a>
   );
