@@ -1,6 +1,7 @@
-import styles from "./PrimaryButton.module.css";
+import styles from "./DeleteIconButton.module.css";
+import { FaTrash } from "react-icons/fa";
 
-export default function PrimaryButton({
+export default function DeleteIconButton({
   width,
   mt,
   mb,
@@ -31,7 +32,7 @@ export default function PrimaryButton({
         onClick={onClick}
         disabled={disabled}
       >
-        {children}
+        <FaTrash />
       </button>
     </a>
   );

@@ -1,0 +1,43 @@
+.table {
+  border: 1px solid rgb(230, 230, 230);
+  table-layout: auto;
+  border-collapse: collapse;
+  border-radius: 20px !important;
+  overflow-x: auto;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.table thead {
+  font-weight: 700;
+}
+
+.table thead th {
+  padding: 10px 20px;
+  border-bottom: 1px solid rgb(230, 230, 230) !important;
+  text-align: left;
+}
+
+.table thead th:nth-of-type(1) {
+  width: 250px;
+}
+
+.table thead th:nth-of-type(2) {
+  width: 200px;
+}
+
+.table thead th:nth-of-type(3) {
+  width: 300px;
+}
+
+.table thead th:nth-of-type(4) {
+  width: 200px;
+}
+
+.table td {
+  padding: 7.5px 20px;
+}
+
+.table tbody tr:hover {
+  background-color: rgb(240, 240, 240);
+}

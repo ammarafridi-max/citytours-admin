@@ -7,7 +7,7 @@ import {
   deleteTour,
   uploadToCloudinary,
 } from "../services/tourServices";
-import { createUrl } from "../services/createUrl";
+import { createUrl } from "../utils/createUrl";
 import AlertBox from "../components/AlertBox/AlertBox";
 
 export const initialTourState = {
@@ -43,8 +43,9 @@ export function useTours(url) {
         const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/tours`);
         const data = await res.json();
         setTours(data);
+        console.log(data);
       } catch (error) {
-        alert(error);
+        console.log(error);
       } finally {
         setIsLoading(false);
       }

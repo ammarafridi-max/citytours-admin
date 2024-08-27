@@ -5,7 +5,12 @@ export default function Loading() {
   return (
     <div style={{ position: "relative" }}>
       <div className={styles.spinnerDiv}>
-        <img src={spinner} className={styles.spinner} />
+        <div className={styles.ldsRing}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     </div>
   );

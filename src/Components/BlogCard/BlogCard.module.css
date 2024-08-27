@@ -6,6 +6,7 @@
   box-shadow: 0px 0px 10px 0px rgba(230, 230, 230, 1);
   overflow: hidden;
   background-color: white;
+  margin-bottom: 30px;
 }
 
 .blogCardDiv:hover .blogCardImg {
@@ -49,9 +50,9 @@
   width: fit-content;
   font-size: 12px;
   /* background-color: #0e9ff2; */
-  background-color: var(--secondary-color);
-  color: white;
-  padding: 3px 15px;
+  background-color: rgb(220, 220, 220);
+  color: black;
+  padding: 3px 10px;
   border-radius: 2px;
 }
 

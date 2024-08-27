@@ -1,5 +1,5 @@
 .Btn {
-  background-color: var(--danger-color);
+  background-color: var(--secondary-color);
   font-size: 15px;
   padding: 8px 30px;
   border: none;
@@ -9,7 +9,7 @@
 }
 
 .Btn:hover {
-  background-color: var(--danger-color-hover);
+  background-color: var(--secondary-color-dark);
 }
 
 .Btn:disabled {

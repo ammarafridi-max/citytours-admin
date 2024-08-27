@@ -3,9 +3,11 @@ import styles from "./PageLayout.module.css";
 
 export default function PageLayout({ children }) {
   return (
-    <div className="row p-0 m-0">
-      <Navigation />
-      <main className={styles.mainContent}>{children}</main>
+    <div className={styles.outer}>
+      <div className={styles.container}>
+        <Navigation />
+        <main className={styles.main}>{children}</main>
+      </div>
     </div>
   );
 }

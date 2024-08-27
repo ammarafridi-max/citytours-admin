@@ -32,7 +32,7 @@ export default function DeleteButton({
         onClick={onClick}
         disabled={disabled}
       >
-        <FaTrash />
+        Delete
       </button>
     </a>
   );

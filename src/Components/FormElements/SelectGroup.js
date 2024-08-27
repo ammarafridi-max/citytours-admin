@@ -21,7 +21,7 @@ export default function SelectGroup({
 
   if (groupType === "long")
     return (
-      <div className="col-12 mb-3 row align-items-center">
+      <div className="col-12 mb-3 row align-items-center m-0">
         <div className="col-2 ">
           <Label htmlFor={name}>{label}</Label>
         </div>

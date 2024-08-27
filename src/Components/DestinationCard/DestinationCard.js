@@ -1,6 +1,6 @@
 import styles from "./DestinationCard.module.css";
 
-function DestinationCard({ href, image, name }) {
+function DestinationCard({ href, image, name, country }) {
   return (
     <div className={styles.destinationCard}>
       <a href={`destinations/${href}`}>
@@ -9,6 +9,7 @@ function DestinationCard({ href, image, name }) {
         </div>
         <div className={styles.DestinationDetail}>
           <h4>{name}</h4>
+          <h5>{country}</h5>
         </div>
       </a>
     </div>

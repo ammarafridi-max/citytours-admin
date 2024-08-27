@@ -1,6 +1,6 @@
-import styles from "./PrimaryButton.module.css";
+import styles from "./SecondaryButton.module.css";
 
-export default function PrimaryButton({
+export default function SecondaryButton({
   width,
   mt,
   mb,

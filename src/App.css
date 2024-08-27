@@ -1,10 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  --primary-color: #04a2fc;
+  --primary-color: #0e9ff2;
   --primary-color-light: #c8e9fc;
-  --primary-color-dark: #0a7bbb;
+  --primary-color-dark: #032539;
   --secondary-color: #f2610e;
+  --secondary-color-dark: #ce520b;
+  /* #ce520b */
   --grey-color: rgb(100, 100, 100);
   --medium-grey-color: rgb(150, 150, 150);
   --light-grey-color: rgb(240, 240, 240);
@@ -14,7 +16,11 @@
 }
 
 * {
-  font-family: "Outfit", sans-serif;
+  font-family: "Raleway", sans-serif;
+}
+
+body {
+  background-color: rgb(240, 240, 240);
 }
 
 a {
@@ -23,9 +29,9 @@ a {
 }
 
 h1 {
-  font-size: 36px;
-  margin-bottom: 30px;
-  font-weight: 700;
+  font-size: 32px;
+  margin-bottom: 50px;
+  font-weight: 600;
   width: fit-content;
 }
 

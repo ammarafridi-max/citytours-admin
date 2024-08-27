@@ -1,35 +1,47 @@
 .Navigation {
-  position: absolute;
-  background-color: #032539;
-  height: 100vh;
+  position: relative;
   width: 17.5%;
-  border-radius: 0 6px 6px 0;
-  overflow: hidden;
-  padding: 150px 10px;
+  height: 100%;
+  overflow: scroll;
+}
+
+.NavigationContent {
+  padding: 175px 0;
+  border-right: 2px solid rgb(245, 245, 245);
+  overflow-x: hidden;
 }
 
 .Btn {
   width: 100%;
+  height: fit-content;
   border: none;
   background-color: transparent;
   text-align: left;
   padding: 10px 20px;
   border-radius: 5px;
-  font-size: 15px;
-  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(100, 100, 100);
   text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .Btn:hover {
-  background-color: #0e9ff2;
+  background-color: rgb(240, 240, 240);
+}
+
+.icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .Dropdown {
+  position: relative;
+  padding: 10px 20px;
   display: flex;
-  justify-content: space-between;
-  text-decoration: none;
-  align-items: center;
-  height: 100%;
 }
 
 .Hidden {
@@ -38,15 +50,19 @@
 }
 
 .Up {
-  transform: rotate(180deg);
-  transition-duration: 0.5s;
+  position: absolute;
+  right: 10px;
+  transform: rotate(0deg);
+  transition-duration: 0.2s;
 }
 
 .Down {
-  transform: rotate(0deg);
-  transition-duration: 0.5s;
+  position: absolute;
+  right: 10px;
+  transform: rotate(-90deg);
+  transition-duration: 0.2s;
 }
 
 .Options button {
-  padding: 10px 0px 10px 35px;
+  padding: 10px 0 10px 40px;
 }

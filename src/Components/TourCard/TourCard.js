@@ -10,7 +10,7 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 function TourCard({ url, image, name, duration, location, price }) {
   return (
     <div className={styles.CardExterior}>
-      <a href={`tours/${url}`}>
+      <a href={`${url}`}>
         <div className={styles.Card}>
           <Image image={image} />
           <Detail
