@@ -2,10 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadToCloudinary } from "../../services/tourServices";
 import { createUrl } from "../../utils/createUrl";
-import { formatDate } from "../../utils/formatDate";
 
 export const initialTourState = {
-  dateCreated: formatDate(new Date()),
+  dateCreated: new Date(),
   dateUpdated: "",
   title: "",
   url: "",
@@ -23,11 +22,12 @@ export const initialTourState = {
 export function useTours(url) {
   const [tours, setTours] = useState([]);
   const [tour, setTour] = useState(initialTourState);
+  const [newTour, setNewTour] = useState(initialTourState);
   const [isLoading, setIsLoading] = useState(false);
-  const descriptionRef = useRef(null);
-  const additionalInformationRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const additionalInformationRef = useRef(null);
+  const descriptionRef = useRef(null);
   const statusOptions = ["Active", "Inactive", "Archive"];
 
   // ---------- GET ALL TOURS ----------
@@ -70,6 +70,51 @@ export function useTours(url) {
 
     getTour();
   }, [url]);
+
+  // ---------- GET A PARTICULAR TOUR ----------
+
+  async function handleCreateTour(e) {
+    try {
+      e.preventDefault();
+      setIsLoading(true);
+
+      let imageUrl = newTour.image;
+      if (newTour.image && newTour.image instanceof File) {
+        imageUrl = await uploadToCloudinary(newTour.image);
+      }
+
+      const updatedTour = {
+        ...newTour,
+        description: descriptionRef.current.getContent(),
+        url: !newTour.url && createUrl(newTour.title),
+        status: newTour.status.toLowerCase(),
+        inclusions: newTour.inclusions.split("\n"),
+        exclusions: newTour.exclusions.split("\n"),
+      };
+
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/tours/create`,
+        {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedTour),
+        }
+      );
+
+      if (res.status === 409) return alert("Tour with same URL exists");
+
+      if (!res.ok) {
+        throw new Error("Failed to add blog");
+      }
+
+      if (res.status === 200) alert("Tour added");
+      navigate("/tours");
+    } catch (error) {
+      alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   // ---------- DELETE A TOUR ----------
 
@@ -134,11 +179,13 @@ export function useTours(url) {
   return {
     tours,
     tour,
-    setTour,
+    newTour,
     isLoading,
+    showModal,
+    setTour,
+    setNewTour,
     setIsLoading,
     alert,
-    showModal,
     descriptionRef,
     additionalInformationRef,
     statusOptions,
@@ -149,5 +196,6 @@ export function useTours(url) {
     handleListChange,
     handleFileChange,
     handleDeleteTour,
+    handleCreateTour,
   };
 }

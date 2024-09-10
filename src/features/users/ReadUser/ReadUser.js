@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import Label from "../../../components/FormElements/Label";
-import { useUsers } from "../UserContext";
+import { useUsers } from "../useUsers";
 import styles from "./ReadUser.module.css";
 import { formatDate } from "../../../utils/formatDate";
 import DeleteIconButton from "../../../components/Buttons/DeleteIconButton";

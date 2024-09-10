@@ -5,7 +5,7 @@ import InputGroup from "../../../components/FormElements/InputGroup";
 import SelectGroup from "../../../components/FormElements/SelectGroup";
 import Loading from "../../../components/Loading/Loading";
 import { PrimarySection } from "../../../components/Sections/Sections";
-import { useUsers } from "../UserContext";
+import { useUsers } from "../useUsers";
 import { useRoles } from "../../roles/useRoles";
 
 export default function CreateUser() {

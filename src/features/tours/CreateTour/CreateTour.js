@@ -1,12 +1,9 @@
 import styles from "./CreateTour.module.css";
-import { useState, useRef } from "react";
 import { Helmet } from "react-helmet";
 import { useDestinations } from "../../destinations/useDestinations";
 import { formatDate } from "../../../utils/formatDate";
-import { createUrl } from "../../../utils/createUrl";
 import { Editor } from "@tinymce/tinymce-react";
-import { uploadToCloudinary } from "../../../services/tourServices";
-import { useTours, initialTourState } from "../useTours";
+import { useTours } from "../useTours";
 import { PrimarySection } from "../../../components/Sections/Sections";
 import InputGroup from "../../../components/FormElements/InputGroup";
 import Label from "../../../components/FormElements/Label";
@@ -14,32 +11,14 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import Loading from "../../../components/Loading/Loading";
 import Input from "../../../components/FormElements/Input";
 import SelectGroup from "../../../components/FormElements/SelectGroup";
-import { useNavigate } from "react-router-dom";
 
 export default function CreateTour() {
-  const navigate = useNavigate();
-  const descriptionRef = useRef(null);
-  const { destinationOptions } = useDestinations();
-  const [isLoading, setIsLoading] = useState(false);
-  const [tour, setTour] = useState({
-    dateCreated: formatDate(new Date()),
-    dateUpdated: "",
-    title: "",
-    url: "",
-    image: "",
-    description: "",
-    duration: { days: "", nights: "" },
-    inclusions: [],
-    exclusions: [],
-    destination: "",
-    status: "",
-    age: { adults: "13+", children: "3 - 12", infants: "0 - 2" },
-    price: { adults: 0, children: 0, infants: 0 },
-  });
+  const { descriptionRef, isLoading, handleCreateTour, newTour, setNewTour } =
+    useTours();
 
   const handleChange = (state) => (e) => {
     const value = state === "image" ? e.target.files[0] : e.target.value;
-    setTour((prevState) => {
+    setNewTour((prevState) => {
       const newState = { ...prevState, [state]: value };
       return newState;
     });
@@ -47,7 +26,7 @@ export default function CreateTour() {
 
   const handleAgeChange = (key) => (e) => {
     const value = e.target.value;
-    setTour((prevState) => ({
+    setNewTour((prevState) => ({
       ...prevState,
       age: {
         ...prevState.age,
@@ -55,52 +34,6 @@ export default function CreateTour() {
       },
     }));
   };
-
-  async function handleAddTour(e) {
-    try {
-      e.preventDefault();
-      setIsLoading(true);
-
-      let imageUrl = tour.image;
-      if (tour.image && tour.image instanceof File) {
-        imageUrl = await uploadToCloudinary(tour.image);
-      }
-
-      const updatedTour = {
-        ...tour,
-        image: imageUrl,
-        description: descriptionRef.current.getContent(),
-        url: !tour.url && createUrl(tour.title),
-        status: tour.status.toUpperCase(),
-        inclusions: tour.inclusions.split("\n"),
-        exclusions: tour.exclusions.split("\n"),
-      };
-
-      console.log(updatedTour);
-
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/tours/create`,
-        {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedTour),
-        }
-      );
-
-      if (res.status === 409) return alert("Tour with same URL exists");
-
-      if (!res.ok) {
-        throw new Error("Failed to add blog");
-      }
-
-      if (res.status === 200) alert("Tour added");
-      navigate("/tours");
-    } catch (error) {
-      alert(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   return (
     <>
@@ -112,40 +45,40 @@ export default function CreateTour() {
       <div>
         <BasicInformation
           handleChange={handleChange}
-          dateCreated={tour.dateCreated}
-          title={tour.title}
-          url={tour.url}
-          image={tour.image}
-          destination={tour.destination}
-          duration={tour.duration}
-          setTour={setTour}
-          status={tour.status}
+          dateCreated={formatDate(newTour.dateCreated)}
+          title={newTour.title}
+          url={newTour.url}
+          image={newTour.image}
+          destination={newTour.destination}
+          duration={newTour.duration}
+          setNewTour={setNewTour}
+          status={newTour.status}
         />
 
         <AgeDetails
-          adults={tour.age.adults}
-          children={tour.age.children}
-          infants={tour.age.infants}
+          adults={newTour.age.adults}
+          children={newTour.age.children}
+          infants={newTour.age.infants}
           handleAgeChange={handleAgeChange}
         />
 
         <Price
-          adults={tour.price.adults}
-          children={tour.price.children}
-          infants={tour.price.infants}
-          setTour={setTour}
+          adults={newTour.price.adults}
+          children={newTour.price.children}
+          infants={newTour.price.infants}
+          setNewTour={setNewTour}
         />
 
         <InclusionsExclusions
-          inclusions={tour.inclusions}
-          exclusions={tour.exclusions}
+          inclusions={newTour.inclusions}
+          exclusions={newTour.exclusions}
           onChange={handleChange}
         />
 
         <TourDescription descriptionRef={descriptionRef} />
 
         <div className="text-center">
-          <PrimaryButton onClick={handleAddTour}>Update</PrimaryButton>
+          <PrimaryButton onClick={handleCreateTour}>Update</PrimaryButton>
         </div>
       </div>
     </>
@@ -159,7 +92,7 @@ function BasicInformation({
   image,
   destination,
   duration,
-  setTour,
+  setNewTour,
   status,
   handleChange,
 }) {
@@ -232,16 +165,16 @@ function BasicInformation({
       <Duration
         days={duration.days}
         nights={duration.nights}
-        setTour={setTour}
+        setNewTour={setNewTour}
       />
     </PrimarySection>
   );
 }
 
-function Duration({ days, nights, setTour }) {
+function Duration({ days, nights, setNewTour }) {
   const handleDurationChange = (key) => (e) => {
     const value = e.target.value;
-    setTour((prevState) => ({
+    setNewTour((prevState) => ({
       ...prevState,
       duration: {
         ...prevState.duration,
@@ -277,10 +210,10 @@ function Duration({ days, nights, setTour }) {
   );
 }
 
-function Price({ setTour, adults, children, infants }) {
+function Price({ setNewTour, adults, children, infants }) {
   const handlePriceChange = (key) => (e) => {
     const value = e.target.value;
-    setTour((prevState) => ({
+    setNewTour((prevState) => ({
       ...prevState,
       price: {
         ...prevState.price,

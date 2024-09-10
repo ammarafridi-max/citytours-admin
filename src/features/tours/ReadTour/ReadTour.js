@@ -7,6 +7,7 @@ import Label from "../../../components/FormElements/Label";
 import Loading from "../../../components/Loading/Loading";
 import { PrimarySection } from "../../../components/Sections/Sections";
 import styles from "./ReadTour.module.css";
+import { formatDate } from "../../../utils/formatDate";
 
 export default function ReadTour() {
   const { url } = useParams();
@@ -78,14 +79,16 @@ function BasicInformation({
         <div className="col-2">
           <Label>Date Created:</Label>
         </div>
-        <p className="col-10 my-0">{dateCreated}</p>
+        <p className="col-10 my-0">{formatDate(dateCreated)}</p>
       </div>
 
       <div className="row mx-0 mb-2">
         <div className="col-2">
           <Label>Date Updated:</Label>
         </div>
-        <p className="col-10 my-0">{dateUpdated ? dateUpdated : "N/A"}</p>
+        <p className="col-10 my-0">
+          {dateUpdated ? formatDate(dateCreated) : "N/A"}
+        </p>
       </div>
 
       <div className="row mx-0 mb-2">

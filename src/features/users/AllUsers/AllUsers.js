@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import styles from "./AllUsers.module.css";
+import { useUsers } from "../useUsers";
 
 export default function AllUsers() {
+  const { users } = useUsers();
+
+  console.log(users);
+
   return (
     <>
       <Helmet>

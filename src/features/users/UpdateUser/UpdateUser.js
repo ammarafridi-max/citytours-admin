@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
-import { useUsers } from "../UserContext";
+import { useUsers } from "../useUsers";
 import { useRoles } from "../../roles/useRoles";
 import { PrimarySection } from "../../../components/Sections/Sections";
 import InputGroup from "../../../components/FormElements/InputGroup";

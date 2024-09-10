@@ -1,4 +1,3 @@
-import { uploadToCloudinary } from "../../../services/destinationServices";
 import { Editor } from "@tinymce/tinymce-react";
 import { createUrl } from "../../../utils/createUrl";
 import InputGroup from "../../../components/FormElements/InputGroup";
@@ -12,12 +11,11 @@ import { statusOptions, useDestinations } from "../useDestinations";
 
 export default function UpdateDestination() {
   const {
-    navigate,
     editorRef,
     currentDestination,
     setCurrentDestination,
     isLoading,
-    setIsLoading,
+    handleUpdateDestination,
   } = useDestinations();
   // const { url } = useParams();
   // const [image, setImage] = useState("");
@@ -35,49 +33,6 @@ export default function UpdateDestination() {
       return updatedData;
     });
   };
-
-  async function handleUpdateDestination(e) {
-    try {
-      e.preventDefault();
-      setIsLoading(true);
-
-      let updatedData = {
-        ...currentDestination,
-        description: editorRef.current.getContent(),
-      };
-
-      console.log(updatedData);
-
-      if (currentDestination.image) {
-        const uploadedImageUrl = await uploadToCloudinary(
-          currentDestination.image
-        );
-        updatedData.image = uploadedImageUrl;
-      }
-
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/destinations/update/${currentDestination._id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to update destination");
-      }
-
-      alert("Destination updated successfully!");
-      navigate("/destinations");
-    } catch (error) {
-      alert("Error: " + error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   return (
     <>

@@ -130,6 +130,51 @@ export function useDestinations() {
     }
   }
 
+  // ---------- UPDATE DESTINATION ----------
+
+  async function handleUpdateDestination(e) {
+    try {
+      e.preventDefault();
+      setIsLoading(true);
+
+      let updatedData = {
+        ...currentDestination,
+        description: editorRef.current.getContent(),
+      };
+
+      console.log(updatedData);
+
+      if (currentDestination.image) {
+        const uploadedImageUrl = await uploadToCloudinary(
+          currentDestination.image
+        );
+        updatedData.image = uploadedImageUrl;
+      }
+
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/destinations/update/${currentDestination._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update destination");
+      }
+
+      alert("Destination updated successfully!");
+      navigate("/destinations");
+    } catch (error) {
+      alert("Error: " + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   // ---------- DELETE DESTINATION ----------
 
   async function handleDeleteDestination() {
@@ -166,6 +211,7 @@ export function useDestinations() {
     setShowModal,
     setCurrentDestination,
     handleCreateDestination,
+    handleUpdateDestination,
     handleDeleteDestination,
   };
 }
