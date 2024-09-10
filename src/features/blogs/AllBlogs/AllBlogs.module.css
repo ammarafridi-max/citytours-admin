@@ -7,7 +7,7 @@
   border: 1px solid rgb(230, 230, 230);
   border-collapse: collapse;
   border-radius: 20px !important;
-  min-width: 1550px; /* Set a minimum width greater than the viewport */
+  min-width: 1300px; /* Set a minimum width greater than the viewport */
   margin-top: 20px;
   table-layout: fixed; /* Force table to respect widths */
   font-size: 14px;
@@ -35,11 +35,11 @@
 }
 
 .table thead th:nth-of-type(3) {
-  width: 300px;
+  width: 200px;
 }
 
 .table thead th:nth-of-type(4) {
-  width: 200px;
+  width: 150px;
 }
 
 .table thead th:nth-of-type(5) {

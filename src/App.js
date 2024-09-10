@@ -22,17 +22,24 @@ import CreateBlog from "./features/blogs/CreateBlog/CreateBlog";
 import UpdateBlog from "./features/blogs/UpdateBlog/UpdateBlog";
 
 // User
-import UserProvider from "./context/userContext";
-import Login from "./features/users/Login/Login";
-import PrivateRoutes from "./features/users/PrivateRoutes/PrivateRoutes";
 import AllUsers from "./features/users/AllUsers/AllUsers";
 import ReadUser from "./features/users/ReadUser/ReadUser";
 import CreateUser from "./features/users/CreateUser/CreateUser";
 import UpdateUser from "./features/users/UpdateUser/UpdateUser";
 
+// Auth
+import AuthProvider from "./features/auth/AuthContext";
+import PrivateRoutes from "./features/auth/PrivateRoutes/PrivateRoutes";
+import Login from "./features/auth/Login/Login";
+
+// Roles
+import AllRoles from "./features/roles/AllRoles/AllRoles";
+import UpdateRole from "./features/roles/UpdateRole/UpdateRole";
+import CreateRole from "./features/roles/CreateRole/CreateRole";
+
 function App() {
   return (
-    <UserProvider>
+    <AuthProvider>
       <BrowserRouter>
         <PageLayout>
           <Routes>
@@ -65,9 +72,16 @@ function App() {
                     <Route path="/blogs/create" element={<CreateBlog />} />
                     <Route path="/blogs/update/:url" element={<UpdateBlog />} />
                     <Route path="/users" element={<AllUsers />} />
-                    <Route path="/users/:url" element={<ReadUser />} />
+                    <Route path="/users/:username" element={<ReadUser />} />
                     <Route path="/users/create" element={<CreateUser />} />
-                    <Route path="/users/update/:url" element={<UpdateUser />} />
+                    <Route
+                      path="/users/update/:username"
+                      element={<UpdateUser />}
+                    />
+                    <Route path="/roles" element={<AllRoles />} />
+                    {/* <Route path="/users/:url" element={<ReadUser />} /> */}
+                    <Route path="/roles/create" element={<CreateRole />} />
+                    <Route path="/roles/update/:url" element={<UpdateRole />} />
                   </Routes>
                 </PrivateRoutes>
               }
@@ -75,7 +89,7 @@ function App() {
           </Routes>
         </PageLayout>
       </BrowserRouter>
-    </UserProvider>
+    </AuthProvider>
   );
 }
 

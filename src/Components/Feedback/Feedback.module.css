@@ -1,0 +1,16 @@
+.feedback {
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.feedback p {
+  margin: 0;
+  padding: 0;
+}
+
+.error {
+  background-color: rgb(255, 210, 210);
+  color: rgb(163, 0, 0);
+}

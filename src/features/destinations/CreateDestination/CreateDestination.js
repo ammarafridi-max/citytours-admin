@@ -1,31 +1,31 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
+import {
+  initialState,
+  statusOptions,
+  useDestinations,
+} from "../useDestinations";
 import { Helmet } from "react-helmet";
 import { Editor } from "@tinymce/tinymce-react";
+import { createUrl } from "../../../utils/createUrl";
+import { uploadToCloudinary } from "../../../services/destinationServices";
+import { countries } from "../../../utils/countries";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import InputGroup from "../../../components/FormElements/InputGroup";
 import Loading from "../../../components/Loading/Loading";
-import { createUrl } from "../../../utils/createUrl";
-import { uploadToCloudinary } from "../../../services/destinationServices";
-import { countries } from "../../../services/countries";
 import SelectGroup from "../../../components/FormElements/SelectGroup";
-import { useNavigate } from "react-router-dom";
 
 export default function DestinationForm() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [destinationState, setDestinationState] = useState({
-    name: "",
-    url: "",
-    image: "",
-    description: "",
-    country: "",
-    active: true,
-  });
-  const editorRef = useRef(null);
+  const {
+    isLoading,
+    newDestinationData,
+    setNewDestinationData,
+    editorRef,
+    handleCreateDestination,
+  } = useDestinations;
 
   const handleChange = (state) => (e) => {
     const value = state === "image" ? e.target.files[0] : e.target.value;
-    setDestinationState((prevState) => {
+    setNewDestinationData((prevState) => {
       const newState = { ...prevState, [state]: value };
       if (state === "name") {
         newState.url = createUrl(value);
@@ -33,59 +33,6 @@ export default function DestinationForm() {
       return newState;
     });
   };
-
-  const handleActiveChange = (e) => {
-    const value = e.target.value === "true";
-    setDestinationState((prevState) => ({ ...prevState, active: value }));
-  };
-
-  async function handleForm(e) {
-    e.preventDefault();
-
-    try {
-      setIsLoading(true);
-      let imageUrl = "";
-      if (destinationState.image) {
-        imageUrl = await uploadToCloudinary(destinationState.image);
-      }
-
-      const destination = {
-        ...destinationState,
-        description: editorRef.current.getContent(),
-        image: imageUrl,
-      };
-      console.log(destination);
-
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/destinations/add`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(destination),
-        }
-      );
-
-      if (response.status === 409) {
-        return alert("Destination with the same URL exists");
-      }
-
-      if (!response.ok) {
-        throw new Error("Failed to add destination");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      alert("Destination added successfully!");
-      navigate("/destinations");
-    } catch (error) {
-      console.error("Failed to add destination:", error.message);
-      alert(`Error: ${error.message}`);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   return (
     <>
@@ -95,11 +42,10 @@ export default function DestinationForm() {
       </Helmet>
       <div>
         <h1>Create Destination</h1>
-        <form onSubmit={handleForm}>
+        <form onSubmit={handleCreateDestination}>
           <BasicDetailsSection
-            destinationState={destinationState}
+            newDestinationData={newDestinationData}
             handleChange={handleChange}
-            handleActiveChange={handleActiveChange}
           />
           <DescriptionSection editorRef={editorRef} />
           <div className="text-center mt-4">
@@ -111,12 +57,7 @@ export default function DestinationForm() {
   );
 }
 
-const BasicDetailsSection = ({
-  destinationState,
-  handleActiveChange,
-  handleChange,
-  handleCountryChange,
-}) => (
+const BasicDetailsSection = ({ newDestinationData, handleChange }) => (
   <div className="row mb-5">
     <h2>Basic Details</h2>
 
@@ -125,7 +66,7 @@ const BasicDetailsSection = ({
       label="Name"
       type="text"
       name="name"
-      value={destinationState.name}
+      value={newDestinationData.name}
       onChange={handleChange("name")}
     />
 
@@ -134,7 +75,7 @@ const BasicDetailsSection = ({
       label="Url"
       type="text"
       name="url"
-      value={destinationState.url}
+      value={newDestinationData.url}
       onChange={handleChange("url")}
     />
 
@@ -150,18 +91,21 @@ const BasicDetailsSection = ({
       groupType="long"
       label="Status"
       name="status"
-      value={destinationState.active}
-      onChange={handleActiveChange}
+      value={newDestinationData.status}
+      onChange={handleChange("status")}
     >
-      <option value={true}>Active</option>
-      <option value={false}>Inactive</option>
+      {statusOptions.map((statusOption, i) => (
+        <option key={i} value={statusOption}>
+          {statusOption}
+        </option>
+      ))}
     </SelectGroup>
 
     <SelectGroup
       groupType="long"
       label="Country"
       name="country"
-      value={destinationState.country}
+      value={newDestinationData.country}
       onChange={handleChange("country")}
     >
       {countries.map((country, i) => (

@@ -1,18 +1,25 @@
 import styles from "./Navigation.module.css";
 import { FaChevronDown } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { AiFillHome } from "react-icons/ai";
 import { MdEdit } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
+import { AuthContext } from "../../features/auth/AuthContext";
 
 export default function Navigation() {
   const location = useLocation();
+  const { logout, user } = useContext(AuthContext);
+
+  function handleClick() {
+    console.log(user);
+  }
 
   return (
     <nav className={styles.Navigation}>
       <div className={styles.NavigationContent}>
-        <NavButton to="/">Home</NavButton>
+        <NavButton to="/" onClick={handleClick}>
+          Home
+        </NavButton>
 
         <NavDropdown
           title="Blogs"
@@ -46,6 +53,8 @@ export default function Navigation() {
         <NavDropdown title="Users" pathname="/users" location={location}>
           <NavDropdownOption to="/users">All Users</NavDropdownOption>
           <NavDropdownOption to="/users/create">New User</NavDropdownOption>
+          <NavDropdownOption to="/roles">Roles</NavDropdownOption>
+          <NavDropdownOption to="/roles/create">New Role</NavDropdownOption>
         </NavDropdown>
 
         <NavDropdown title="General Settings" location={location}>
@@ -58,17 +67,17 @@ export default function Navigation() {
             Contact Information
           </NavDropdownOption>
         </NavDropdown>
+
+        <NavButton onClick={logout}>Log Out</NavButton>
       </div>
     </nav>
   );
 }
 
-function NavButton({ to, children, icon }) {
-  const [btnIcon, setBtnIcon] = useState(icon);
-
+function NavButton({ to, children, icon, onClick }) {
   return (
     <NavLink to={to}>
-      <button className={styles.Btn}>
+      <button className={styles.Btn} onClick={onClick}>
         {/* <span className={styles.icon}>
           <AiFillHome />
         </span> */}
@@ -78,7 +87,7 @@ function NavButton({ to, children, icon }) {
   );
 }
 
-function NavDropdown({ title, children, pathname, location, icon }) {
+function NavDropdown({ title, children, pathname, location, icon, disabled }) {
   const [showOptions, setShowOptions] = useState(
     location.pathname.includes(pathname)
   );
@@ -92,6 +101,7 @@ function NavDropdown({ title, children, pathname, location, icon }) {
       <button
         className={`${styles.Btn} ${styles.Dropdown}`}
         onClick={toggleOptions}
+        disabled={disabled}
       >
         {/* <span className={styles.icon}>{icon}</span> */}
         {title}

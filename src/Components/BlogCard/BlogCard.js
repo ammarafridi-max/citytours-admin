@@ -12,20 +12,8 @@ function BlogCard({ title, img, description, tag, dateCreated, url }) {
   };
 
   return (
-    <div className={styles.blogCardDiv}>
-      <Link to={`/blogs/${url}`}>
-        <div className={styles.blogCardImgDiv}>
-          <img src={img} className={styles.blogCardImg} />
-        </div>
-        <div className={styles.blogCardContent}>
-          <div className={styles.blogCardDate}>{dateCreated}</div>
-          <div className={styles.blogCardPill}>{tag}</div>
-          <h4 className={styles.blogCardHeading}>{title}</h4>
-
-          {/* <img className={styles.blogAuthorImage} />
-                <h6 className={styles.blogAuthorName}>Ammar Afridi</h6> */}
-        </div>
-      </Link>
+    <div className={styles.blogCard}>
+      <div className={styles.imgContainer}></div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import DeleteButton from "../Buttons/DeleteButton";
 import PrimaryButton from "../Buttons/PrimaryButton";
+import { MdCancel } from "react-icons/md";
 import styles from "./DeleteModal.module.css";
 
 export default function DeleteModal({ onCancel, onDelete, item }) {
@@ -7,6 +8,7 @@ export default function DeleteModal({ onCancel, onDelete, item }) {
     <div className={styles.ModalOverlay}>
       <div className={styles.Container}>
         <div className={styles.Modal}>
+          <MdCancel className={styles.Icon} />
           <p className={styles.Heading}>Confirm deletion</p>
           <p className={styles.Text}>Are you sure you want to delete {item}?</p>
           <PrimaryButton onClick={onCancel}>Cancel</PrimaryButton>

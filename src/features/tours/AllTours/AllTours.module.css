@@ -1,11 +1,12 @@
 .table {
-  border: 1px solid rgb(230, 230, 230);
+  border: 1px solid rgb(200, 200, 200);
   table-layout: auto;
   border-collapse: collapse;
   border-radius: 20px !important;
   overflow-x: auto;
   padding: 0;
   margin-top: 20px;
+  min-width: 1550px;
 }
 
 .table thead {
@@ -13,8 +14,8 @@
 }
 
 .table thead th {
-  padding: 10px 20px;
-  border-bottom: 1px solid rgb(230, 230, 230) !important;
+  padding: 20px 20px;
+  border-bottom: 1px solid rgb(200, 200, 200) !important;
   text-align: left;
 }
 
@@ -34,8 +35,20 @@
   width: 200px;
 }
 
+.table thead th:nth-of-type(5) {
+  width: 200px;
+}
+
+.table thead th:nth-of-type(6) {
+  width: 200px;
+}
+
+.table thead th:nth-of-type(7) {
+  width: 200px;
+}
+
 .table td {
-  padding: 7.5px 20px;
+  padding: 12.5px 20px;
 }
 
 .table tbody tr:hover {

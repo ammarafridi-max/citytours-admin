@@ -1,9 +1,10 @@
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import DestinationCard from "../../../components/DestinationCard/DestinationCard";
 import Loading from "../../../components/Loading/Loading";
 import styles from "./AllDestinations.module.css";
-import { useDestinations } from "../../../hooks/useDestinations";
+import { useDestinations } from "../useDestinations";
+import Pill from "../../../components/Pills/Pill";
+import SuccessPill from "../../../components/Pills/SuccessPill";
+import DangerPill from "../../../components/Pills/DangerPill";
 
 export default function AllDestinations() {
   const { isLoading, destinations } = useDestinations();
@@ -35,7 +36,14 @@ export default function AllDestinations() {
               </td>
               <td>{destination.url}</td>
               <td>{destination.country}</td>
-              <td>{destination.active ? "Yes" : "No"}</td>
+              <td>
+                {destination.status === "Active" && (
+                  <SuccessPill>{destination.status}</SuccessPill>
+                )}
+                {destination.status === "Inactive" && (
+                  <DangerPill>{destination.status}</DangerPill>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

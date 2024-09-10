@@ -1,6 +1,6 @@
 import TourCard from "../../../components/TourCard/TourCard";
 import { Helmet } from "react-helmet";
-import { useTours } from "../../../hooks/useTours";
+import { useTours } from "../useTours";
 import styles from "./AllTours.module.css";
 
 export default function AllTours() {
@@ -15,21 +15,31 @@ export default function AllTours() {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>Title</th>
             <th>URL</th>
-            <th>Country</th>
-            <th>Active</th>
+            <th>Destination</th>
+            <th>Status</th>
+            <th>Duration</th>
+            <th>Date Created</th>
+            <th>Date Updated</th>
           </tr>
         </thead>
         <tbody>
           {tours.map((tour) => (
             <tr>
               <td>
-                <a href={`destinations/${tour.url}`}>{tour.name}</a>
+                <a href={`tours/${tour.url}`}>{tour.title}</a>
               </td>
-              <td>{tour.url}</td>
-              <td>{tour.country}</td>
-              <td>{tour.active ? "Yes" : "No"}</td>
+              <td>
+                <a href={`tours/${tour.url}`}>{tour.url}</a>
+              </td>
+              <td>{tour.destination}</td>
+              <td>{tour.status}</td>
+              <td>
+                {tour.duration.days} days - {tour.duration.nights} nights
+              </td>
+              <td>{tour.dateCreated}</td>
+              <td>{tour.dateUpdated ? tour.dateUpdated : "NA"}</td>
             </tr>
           ))}
         </tbody>

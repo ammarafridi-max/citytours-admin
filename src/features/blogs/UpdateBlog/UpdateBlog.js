@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { tags } from "../../../services/blogServices";
-import { useDestinations } from "../../../hooks/useDestinations";
-import { today } from "../../../services/dates";
+import { useDestinations } from "../../destinations/useDestinations";
 import { Editor } from "@tinymce/tinymce-react";
+import { tags, statusOptions, useBlogs } from "../useBlogs";
 import InputGroup from "../../../components/FormElements/InputGroup";
 import SelectGroup from "../../../components/FormElements/SelectGroup";
 import Loading from "../../../components/Loading/Loading";
@@ -11,17 +10,22 @@ import Label from "../../../components/FormElements/Label";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import { createUrl } from "../../../utils/createUrl";
 import { Helmet } from "react-helmet";
+import { formatDate } from "../../../utils/formatDate";
 
 export default function UpdateBlog() {
   const { url } = useParams();
-  const editorRef = useRef(null);
+  const {
+    handleUpdateBlog,
+    currentBlog,
+    setCurrentBlog,
+    isLoading,
+    editorRef,
+  } = useBlogs(url);
   const { destinationOptions } = useDestinations();
-  const [isLoading, setIsLoading] = useState(false);
-  const [blog, setBlog] = useState({});
 
   const handleChange = (name) => (e) => {
     const value = name === "image" ? e.target.files[0] : e.target.value;
-    setBlog((prevData) => {
+    setCurrentBlog((prevData) => {
       let updatedData = {
         ...prevData,
         [name]: value,
@@ -33,69 +37,20 @@ export default function UpdateBlog() {
     });
   };
 
-  async function handleUpdateBlog(e) {
-    try {
-      e.preventDefault();
-      setIsLoading(true);
-
-      const updatedBlog = {
-        ...blog,
-        content: editorRef.current.getContent(),
-        dateUpdated: today,
-      };
-
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/blogs/update/${url}`,
-        {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updatedBlog),
-        }
-      );
-      if (!res.ok) throw new Error("Could not delete blog");
-      const data = await res.json();
-      alert("Blog updated successfully");
-      console.log(data);
-    } catch (error) {
-      alert(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    async function getBlog() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/blogs/get/${url}`
-        );
-        const data = await res.json();
-        setBlog(data);
-        console.log(data);
-      } catch (error) {
-        alert(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getBlog();
-  }, []);
-
   return (
     <>
       {isLoading && <Loading />}
       <Helmet>
-        <title>{`Update ${blog.title}`}</title>
+        <title>{`Update ${currentBlog.title}`}</title>
       </Helmet>
-      <h1>Update {blog.title}</h1>
+      <h1>Update {currentBlog.title}</h1>
       <form>
         <InputGroup
           groupType="long"
           label="Date Created"
           type="text"
           name="dateCreated"
-          value={blog.dateCreated}
+          value={formatDate(currentBlog.dateCreated)}
           disabled
         />
         <InputGroup
@@ -103,7 +58,7 @@ export default function UpdateBlog() {
           label="Date Updated"
           type="text"
           name="dateUpdated"
-          value={blog.dateUpdated || ""}
+          value={formatDate(currentBlog.dateUpdated)}
           disabled
         />
         <InputGroup
@@ -111,7 +66,7 @@ export default function UpdateBlog() {
           label="Title"
           name="title"
           type="text"
-          value={blog.title}
+          value={currentBlog.title}
           onChange={handleChange("title")}
         />
         <InputGroup
@@ -119,7 +74,7 @@ export default function UpdateBlog() {
           label="URL"
           name="url"
           type="text"
-          value={blog.url}
+          value={currentBlog.url}
           onChange={handleChange("url")}
         />
         <InputGroup
@@ -128,13 +83,13 @@ export default function UpdateBlog() {
           name="image"
           type="file"
         />
+
         <SelectGroup
           groupType="long"
           label="Tag"
           name="tag"
-          value={blog.tag}
+          value={currentBlog.tag}
           onChange={handleChange("tag")}
-          //   onChange={handleChange("tag")}
         >
           {tags.map((tag, i) => (
             <option key={i} value={tag}>
@@ -147,9 +102,8 @@ export default function UpdateBlog() {
           groupType="long"
           label="Destination"
           name="destination"
-          value={blog.destination}
+          value={currentBlog.destination}
           onChange={handleChange("destination")}
-          //   onChange={handleChange("destination")}
         >
           {destinationOptions.map((destination, i) => (
             <option key={i} value={destination}>
@@ -158,7 +112,33 @@ export default function UpdateBlog() {
           ))}
         </SelectGroup>
 
-        <DescriptionEditor initialValue={blog.content} editorRef={editorRef} />
+        <SelectGroup
+          groupType="long"
+          label="Status"
+          name="status"
+          value={currentBlog.status}
+          onChange={handleChange("status")}
+        >
+          {statusOptions.map((statusOption, i) => (
+            <option key={i} value={statusOption}>
+              {statusOption}
+            </option>
+          ))}
+        </SelectGroup>
+
+        <InputGroup
+          groupType="long"
+          label="Excerpt"
+          name="excerpt"
+          type="text"
+          value={currentBlog.excerpt}
+          onChange={handleChange("excerpt")}
+        />
+
+        <DescriptionEditor
+          initialValue={currentBlog.content}
+          editorRef={editorRef}
+        />
 
         <div className="text-center">
           <PrimaryButton onClick={handleUpdateBlog}>Update</PrimaryButton>

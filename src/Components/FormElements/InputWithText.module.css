@@ -1,0 +1,26 @@
+.container {
+  color: black;
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  background-color: rgb(233, 233, 233);
+  border-radius: var(--input-border-radius);
+  margin: 20px 0;
+  padding: 10px 20px;
+  transition-duration: 0.3s;
+  display: block;
+}
+
+.container span {
+  width: fit-content;
+  display: block;
+}
+
+.container input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid rgb(100, 100, 100);
+  color: rgb(100, 100, 100);
+  width: 100%;
+}

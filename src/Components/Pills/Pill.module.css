@@ -1,0 +1,16 @@
+.pill {
+  color: white;
+  padding: 5px 10px;
+  border-radius: 100px;
+  font-size: 13.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.success {
+  background-color: #22c55e;
+}
+
+.danger {
+  background-color: #dc2626;
+}

@@ -2,19 +2,6 @@ const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`;
 const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_BLOG_PRESET;
 
-export const tags = [
-  "Destination Guides",
-  "Travel Tips & Advice",
-  "Adventure Travel",
-  "Cultural Experiences",
-  "Luxury Travel",
-  "Family Travel",
-  "Solo Travel",
-  "Food & Travel",
-  "Sustainable Travel",
-  "Travel Photography",
-];
-
 export function uploadToCloudinary(file) {
   const formData = new FormData();
   formData.append("file", file);

@@ -1,38 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  fetchTour,
-  createTour,
-  updateTour,
-  deleteTour,
-  uploadToCloudinary,
-} from "../services/tourServices";
-import { createUrl } from "../utils/createUrl";
-import AlertBox from "../components/AlertBox/AlertBox";
+import { uploadToCloudinary } from "../../services/tourServices";
+import { createUrl } from "../../utils/createUrl";
+import { formatDate } from "../../utils/formatDate";
 
 export const initialTourState = {
-  name: "",
+  dateCreated: formatDate(new Date()),
+  dateUpdated: "",
+  title: "",
   url: "",
   image: "",
   description: "",
-  duration: "",
-  location: { city: "", country: "" },
-  age: { adults: "18 - 60", children: "2 - 17", infants: "0 - 2" },
-  price: { adults: 0, children: 0, infants: 0 },
+  duration: { days: "", nights: "" },
   inclusions: [],
   exclusions: [],
-  additionalInformation: "",
+  destination: "",
+  status: "",
+  age: { adults: "13+", children: "3 - 12", infants: "0 - 2" },
+  price: { adults: 0, children: 0, infants: 0 },
 };
 
 export function useTours(url) {
   const [tours, setTours] = useState([]);
-  const [tourData, setTourData] = useState(initialTourState);
+  const [tour, setTour] = useState(initialTourState);
   const [isLoading, setIsLoading] = useState(false);
   const descriptionRef = useRef(null);
   const additionalInformationRef = useRef(null);
-  const [alert, setAlert] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const statusOptions = ["Active", "Inactive", "Archive"];
 
   // ---------- GET ALL TOURS ----------
 
@@ -42,7 +38,7 @@ export function useTours(url) {
         setIsLoading(true);
         const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/tours`);
         const data = await res.json();
-        setTours(data);
+        setTours(data.data);
         console.log(data);
       } catch (error) {
         console.log(error);
@@ -53,11 +49,53 @@ export function useTours(url) {
     fetchTours();
   }, []);
 
+  // ---------- GET A PARTICULAR TOUR ----------
+
+  useEffect(() => {
+    async function getTour() {
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/tours/${url}`
+        );
+        const data = await res.json();
+        setTour(data);
+        console.log(data);
+      } catch (error) {
+        alert(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    getTour();
+  }, [url]);
+
+  // ---------- DELETE A TOUR ----------
+
+  async function handleDeleteTour() {
+    try {
+      setIsLoading(true);
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/tours/delete/${url}`,
+        { method: "delete" }
+      );
+      if (!res.ok) throw new Error("An error occurred");
+      const data = await res.json();
+      alert(data.message);
+      navigate("/tours");
+    } catch (error) {
+      alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   // ---------- FORM FUNCTIONS ----------
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setTourData((prevData) => ({
+    setTour((prevData) => ({
       ...prevData,
       [name]: value,
       url: name === "name" ? createUrl(value) : prevData.url,
@@ -66,7 +104,7 @@ export function useTours(url) {
 
   const handleNestedInputChange = (e, field, nestedField) => {
     const { value } = e.target;
-    setTourData((prevData) => ({
+    setTour((prevData) => ({
       ...prevData,
       [field]: {
         ...prevData[field],
@@ -76,7 +114,7 @@ export function useTours(url) {
   };
 
   const handleListChange = (listName, action, value, index) => {
-    setTourData((prevData) => {
+    setTour((prevData) => {
       const updatedList =
         action === "add"
           ? [...prevData[listName], value]
@@ -89,62 +127,27 @@ export function useTours(url) {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = await uploadToCloudinary(file);
-      setTourData((prevData) => ({ ...prevData, image: imageUrl }));
-    }
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const formData = {
-        ...tourData,
-        description: descriptionRef.current.getContent(),
-        additionalInformation: additionalInformationRef.current.getContent(),
-      };
-      if (url) {
-        await updateTour(url, formData);
-        setAlert(
-          <AlertBox type="success">Tour updated successfully.</AlertBox>
-        );
-      } else {
-        await createTour(formData);
-        setAlert(
-          <AlertBox type="success">Tour created successfully.</AlertBox>
-        );
-      }
-      setTimeout(() => navigate("/tours"), 3000);
-    } catch (error) {
-      setAlert(<AlertBox type="error">{error.message}</AlertBox>);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteTour(url);
-      setAlert(<AlertBox type="success">Tour deleted successfully.</AlertBox>);
-      setTimeout(() => navigate("/tours"), 3000);
-    } catch (error) {
-      setAlert(<AlertBox type="error">{error.message}</AlertBox>);
+      setTour((prevData) => ({ ...prevData, image: imageUrl }));
     }
   };
 
   return {
     tours,
-    tourData,
+    tour,
+    setTour,
     isLoading,
+    setIsLoading,
     alert,
     showModal,
     descriptionRef,
     additionalInformationRef,
+    statusOptions,
+    navigate,
     setShowModal,
     handleInputChange,
     handleNestedInputChange,
     handleListChange,
     handleFileChange,
-    handleFormSubmit,
-    handleDelete,
+    handleDeleteTour,
   };
 }

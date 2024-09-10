@@ -1,8 +1,8 @@
 import { Helmet } from "react-helmet";
 import styles from "./AllBlogs.module.css";
-import BlogCard from "../../../components/BlogCard/BlogCard";
 import Loading from "../../../components/Loading/Loading";
-import { useBlogs } from "../../../hooks/useBlogs";
+import { useBlogs } from "../useBlogs";
+import { formatDate } from "../../../utils/formatDate";
 
 export default function AllBlogs() {
   const { blogs, isLoading } = useBlogs();
@@ -18,7 +18,7 @@ export default function AllBlogs() {
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Title</th>
               <th>URL</th>
               <th>Country</th>
               <th>Status</th>
@@ -37,8 +37,8 @@ export default function AllBlogs() {
                 </td>
                 <td>{blog.destination}</td>
                 <td>{blog.status}</td>
-                <td>{blog.dateCreated}</td>
-                <td>{blog.dateUpdated}</td>
+                <td>{formatDate(blog.dateCreated)}</td>
+                <td>{formatDate(blog.dateUpdated)}</td>
               </tr>
             ))}
           </tbody>

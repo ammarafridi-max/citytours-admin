@@ -18,14 +18,24 @@
 .Modal {
   background-color: white;
   width: 100%;
-  padding: 40px;
-  border-radius: 3px;
+  padding: 60px;
+  border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.Icon {
+  color: red;
+  font-size: 60px;
+  margin-bottom: 10px;
 }
 
 .Heading {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 600;
-  border-bottom: 2px solid rgb(220, 220, 220);
-  padding-bottom: 20px;
+  padding: 0;
+}
+
+.Text {
+  margin: 10px 0 20px 0;
 }

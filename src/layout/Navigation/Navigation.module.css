@@ -66,3 +66,7 @@
 .Options button {
   padding: 10px 0 10px 40px;
 }
+
+.Btn:disabled {
+  opacity: 0.5;
+}

@@ -12,6 +12,7 @@ export default function Input(props) {
       name={props.name}
       onClick={props.onClick}
       disabled={props.disabled && true}
+      checked={props.checked}
     />
   );
 }

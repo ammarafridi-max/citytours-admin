@@ -1,84 +1,32 @@
 import styles from "./CreateBlog.module.css";
-import { useRef, useState } from "react";
-import { today } from "../../../services/dates";
-import { useDestinations } from "../../../hooks/useDestinations";
-import { createUrl } from "../../../utils/createUrl";
-import { formatDate } from "../../../utils/formatDate";
-import { tags, uploadToCloudinary } from "../../../services/blogServices";
+import { Helmet } from "react-helmet";
+import { useDestinations } from "../../destinations/useDestinations";
+import { tags, useBlogs } from "../useBlogs";
 import { Editor } from "@tinymce/tinymce-react";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import Label from "../../../components/FormElements/Label";
 import InputGroup from "../../../components/FormElements/InputGroup";
 import SelectGroup from "../../../components/FormElements/SelectGroup";
 import Loading from "../../../components/Loading/Loading";
-import { Helmet } from "react-helmet";
-import { useNavigate } from "react-router-dom";
+import { formatDate } from "../../../utils/formatDate";
 
 export default function CreateBlog() {
-  const editorRef = useRef(null);
-  const navigate = useNavigate();
+  const {
+    isLoading,
+    handleCreateBlog,
+    editorRef,
+    newBlogData,
+    setNewBlogData,
+  } = useBlogs();
   const { destinationOptions } = useDestinations();
-  const [isLoading, setIsLoading] = useState(false);
-  const [blogData, setBlogData] = useState({
-    title: "",
-    url: "",
-    dateCreated: formatDate(new Date()),
-    dateUpdated: "",
-    tag: tags[0],
-    status: "Draft",
-    content: "",
-    image: "",
-    destination: "",
-  });
 
   const handleChange = (state) => (e) => {
     const value = state === "image" ? e.target.files[0] : e.target.value;
-    setBlogData((prevState) => {
+    setNewBlogData((prevState) => {
       const newState = { ...prevState, [state]: value };
       return newState;
     });
   };
-
-  async function handleSubmit(e) {
-    try {
-      e.preventDefault();
-      setIsLoading(true);
-
-      let imageUrl = blogData.image;
-      if (blogData.image && blogData.image instanceof File) {
-        imageUrl = await uploadToCloudinary(blogData.image);
-      }
-
-      const blog = {
-        ...blogData,
-        url: blogData.url ? blogData.url : createUrl(blogData.title),
-        content: editorRef.current.getContent(),
-        image: imageUrl,
-      };
-
-      console.log(blog);
-
-      const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/blogs/add`,
-        {
-          method: "post",
-          body: JSON.stringify(blog),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      if (res.status === 409)
-        return alert("Blog with the same URL already exists");
-      if (!res.ok) {
-        throw new Error("Failed to add blog");
-      }
-      if (res.status === 200) alert("Blog added successfully");
-      navigate("/blogs");
-    } catch (error) {
-      alert(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   return (
     <>
@@ -86,14 +34,14 @@ export default function CreateBlog() {
         <title>Create Blog</title>
       </Helmet>
       {isLoading && <Loading />}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleCreateBlog}>
         <h1>Create Blog</h1>
         <InputGroup
           groupType="long"
           label="Date Created"
           type="text"
           name="dateCreated"
-          value={blogData.dateCreated}
+          value={formatDate(newBlogData.dateCreated)}
           disabled
         />
         <InputGroup
@@ -101,7 +49,7 @@ export default function CreateBlog() {
           label="Title"
           type="text"
           name="title"
-          value={blogData.title}
+          value={newBlogData.title}
           onChange={handleChange("title")}
         />
         <InputGroup
@@ -109,7 +57,7 @@ export default function CreateBlog() {
           label="URL"
           type="text"
           name="url"
-          value={blogData.url}
+          value={newBlogData.url}
           onChange={handleChange("url")}
         />
         <InputGroup
@@ -124,7 +72,7 @@ export default function CreateBlog() {
           groupType="long"
           label="Tag"
           name="tag"
-          value={blogData.tag}
+          value={newBlogData.tag}
           onChange={handleChange("tag")}
         >
           {tags.map((tag, i) => (
@@ -138,10 +86,9 @@ export default function CreateBlog() {
           groupType="long"
           label="Destination"
           name="destination"
-          value={blogData.destination}
+          value={newBlogData.destination}
           onChange={handleChange("destination")}
         >
-          <option value=""></option>
           {destinationOptions.map((destination, i) => (
             <option key={i} value={destination}>
               {destination}
@@ -153,13 +100,26 @@ export default function CreateBlog() {
           groupType="long"
           label="Status"
           name="status"
-          value={blogData.status}
+          value={newBlogData.status}
           onChange={handleChange("status")}
         >
           <option value="Draft">Draft</option>
           <option value="Published">Published</option>
           <option value="Archived">Archived</option>
         </SelectGroup>
+
+        <div className="row mx-0">
+          <div className="col-2">
+            <Label>excerpt</Label>
+          </div>
+          <div className="col-10">
+            <textarea
+              value={newBlogData.excerpt}
+              onChange={handleChange("excerpt")}
+              className={styles.textarea}
+            ></textarea>
+          </div>
+        </div>
 
         <DescriptionSection editorRef={editorRef} />
 

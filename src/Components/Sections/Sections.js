@@ -1,8 +1,36 @@
-export function PrimarySection(props) {
+import styles from "./Sections.module.css";
+
+export function PrimarySection({
+  children,
+  className,
+  pt,
+  pb,
+  py,
+  pl,
+  pr,
+  px,
+  mt,
+  mb,
+  my,
+  ml,
+  mr,
+  mx,
+}) {
   const style = {
-    padding: "100px 20px",
+    marginTop: mt || my,
+    marginBottom: mb || my,
+    marginLeft: ml || mx,
+    marginRight: mr || mx,
+    paddingTop: pt || py,
+    paddingBottom: pb || py,
+    paddingLeft: pl || px,
+    paddingRight: pr || px,
   };
-  return <section className={props.className}>{props.children}</section>;
+  return (
+    <section className={`${styles.primarySection} ${className}`} style={style}>
+      {children}
+    </section>
+  );
 }
 
 export function ImgSection(props) {
