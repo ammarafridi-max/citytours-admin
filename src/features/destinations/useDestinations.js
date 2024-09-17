@@ -215,25 +215,3 @@ export function useDestinations() {
     handleDeleteDestination,
   };
 }
-
-const sampleUserData = {
-  name: "Ammar Afridi",
-  username: "ammar.afridi",
-  email: "ammar.afridi95@gmail.com",
-  password: "Obaid123",
-  title: "Admin",
-  permissions: {
-    readBlogs: true,
-    createBlogs: true,
-    updateBlogs: true,
-    deleteBlogs: true,
-    readDestinations: true,
-    createDestinations: true,
-    updateDestinations: true,
-    deleteDestinations: true,
-    readTours: true,
-    createTours: true,
-    updateTours: true,
-    deleteTours: true,
-  },
-};

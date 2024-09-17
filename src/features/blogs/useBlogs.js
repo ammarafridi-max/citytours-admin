@@ -37,10 +37,17 @@ export function useBlogs(blogUrl) {
   const [currentBlog, setCurrentBlog] = useState(initialState);
   const [blogs, setBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [newBlogData, setNewBlogData] = useState({
     ...initialState,
     status: statusOptions[0],
     tag: tags[0],
+  });
+  const [alertBox, setAlertBox] = useState({
+    showAlertBox: false,
+    title: "",
+    type: "info",
+    message: "",
   });
   const navigate = useNavigate();
 
@@ -152,8 +159,12 @@ export function useBlogs(blogUrl) {
       );
       if (!res.ok) throw new Error("Could not delete blog");
       const data = await res.json();
-      alert("Blog updated successfully");
-      navigate("/blogs");
+      setAlertBox({
+        type: "success",
+        title: "Updated successfully!",
+        message: "Blog has been updated",
+        showAlertBox: true,
+      });
       console.log(data);
     } catch (error) {
       alert(error);
@@ -173,8 +184,13 @@ export function useBlogs(blogUrl) {
       );
       if (!res.ok) throw new Error("An error occurred");
       const data = await res.json();
-      alert(data.message);
-      navigate("/blogs");
+      setAlertBox({
+        type: "success",
+        title: "Blog delete!",
+        message: "Blog has been deleted successfully",
+        showAlertBox: true,
+      });
+      setShowModal(false);
     } catch (error) {
       alert(error);
     } finally {
@@ -186,12 +202,17 @@ export function useBlogs(blogUrl) {
     editorRef,
     initialState,
     currentBlog,
-    setCurrentBlog,
+    alertBox,
     blogs,
     isLoading,
-    setIsLoading,
-    navigate,
     newBlogData,
+    showModal,
+    showModal,
+    setShowModal,
+    navigate,
+    setCurrentBlog,
+    setIsLoading,
+    setAlertBox,
     setNewBlogData,
     handleCreateBlog,
     handleUpdateBlog,

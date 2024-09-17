@@ -133,6 +133,7 @@ function BasicInformation({
         name="image"
         label="Image"
         type="file"
+        multiple="multiple"
         onChange={handleChange("image")}
       />
 

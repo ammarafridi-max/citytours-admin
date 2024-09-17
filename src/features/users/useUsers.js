@@ -22,6 +22,12 @@ export function useUsers(username) {
   const [currentUser, setCurrentUser] = useState({});
   const [newPassword, setNewPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [alertBox, setAlertBox] = useState({
+    showAlertBox: false,
+    title: "",
+    type: "info",
+    message: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
   const statusOptions = ["Active", "Inactive", "Suspended"];
   const navigate = useNavigate();
@@ -34,10 +40,23 @@ export function useUsers(username) {
         setIsLoading(true);
         const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/users`);
         const data = await res.json();
-        alert(data.message);
-        setUsers(data.data);
+        if (res.ok) {
+          setUsers(data.data);
+        } else {
+          setAlertBox({
+            showAlertBox: true,
+            type: "error",
+            title: data.message,
+            message: "Could not fetch users!",
+          });
+        }
       } catch (error) {
-        alert(error);
+        setAlertBox({
+          showAlertBox: true,
+          type: "error",
+          title: "An error occurred",
+          message: "Could not fetch users!",
+        });
       } finally {
         setIsLoading(false);
       }
@@ -53,33 +72,50 @@ export function useUsers(username) {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/users/get/${username}`
+          `${process.env.REACT_APP_BACKEND_URL}/users/read/${username}`
         );
         if (!res.ok) {
-          alert(`Could not find username ${username}`);
-          return navigate("/users");
+          setAlertBox({
+            showAlertBox: true,
+            type: "error",
+            title: "Error",
+            message: `Could not fetch user with username: ${username}!`,
+          });
+          return; // Exit function if the response is not okay
         }
+
         const data = await res.json();
         setCurrentUser(data.data);
-        console.log(data);
+
+        setAlertBox({
+          showAlertBox: true,
+          type: "success",
+          title: "Success",
+          message: `User data for ${username} has been successfully fetched!`,
+        });
       } catch (error) {
-        alert(error);
+        setAlertBox({
+          showAlertBox: true,
+          type: "error",
+          title: "Error",
+          message: `An error occurred while fetching the user: ${error.message}`,
+        });
       } finally {
         setIsLoading(false);
       }
     }
+
     fetchUser();
   }, [username]);
 
   // -------------------- CREATE NEW USER --------------------
 
   async function handleCreateUser(e) {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      console.log(newUser);
       setIsLoading(true);
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/users/add`,
+        `${process.env.REACT_APP_BACKEND_URL}/users/create`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -87,9 +123,13 @@ export function useUsers(username) {
         }
       );
       const data = await res.json();
-      alert(data.message);
+      if (res.ok) {
+        alert("User created successfully");
+      } else {
+        alert(data.message);
+      }
     } catch (error) {
-      alert(error);
+      alert("Error creating user: " + error);
     } finally {
       setIsLoading(false);
     }
@@ -98,23 +138,30 @@ export function useUsers(username) {
   // -------------------- UPDATE A USER --------------------
 
   async function handleUpdateUser(e) {
+    e.preventDefault();
     try {
-      e.preventDefault();
       setIsLoading(true);
       const updatedUser = {
         ...currentUser,
         dateUpdated: new Date(),
-        password: newPassword,
+        password: newPassword || currentUser.password, // Maintain password if not changed
       };
       const res = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/users/${username}`,
-        { method: "put", body: JSON.stringify(updatedUser) }
+        `${process.env.REACT_APP_BACKEND_URL}/users/update/${username}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedUser),
+        }
       );
-      const data = res.json();
-      console.log(updatedUser);
-      console.log(data);
+      const data = await res.json();
+      if (res.ok) {
+        alert("User updated successfully");
+      } else {
+        alert(data.message);
+      }
     } catch (error) {
-      console.log(error);
+      alert("Error updating user: " + error);
     } finally {
       setIsLoading(false);
     }
@@ -123,17 +170,24 @@ export function useUsers(username) {
   // -------------------- DELETE A USER --------------------
 
   async function handleDeleteUser(e) {
+    e.preventDefault();
     try {
-      e.preventDefault();
       setIsLoading(true);
       const res = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/users/delete/${username}`,
-        { method: "delete" }
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }
       );
       const data = await res.json();
-      alert(data.message);
+      if (res.ok) {
+        alert("User deleted successfully");
+      } else {
+        alert(data.message);
+      }
     } catch (error) {
-      alert(error);
+      alert("Error deleting user: " + error);
     } finally {
       setIsLoading(false);
     }
@@ -150,12 +204,14 @@ export function useUsers(username) {
     newPassword,
     showModal,
     statusOptions,
+    alertBox,
     setUsers,
     setNewUser,
     setCurrentUser,
     setIsLoading,
     setNewPassword,
     setShowModal,
+    setAlertBox,
     handleCreateUser,
     handleUpdateUser,
     handleDeleteUser,

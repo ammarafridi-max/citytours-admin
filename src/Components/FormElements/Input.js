@@ -13,6 +13,7 @@ export default function Input(props) {
       onClick={props.onClick}
       disabled={props.disabled && true}
       checked={props.checked}
+      multiple={props.multiple}
     />
   );
 }

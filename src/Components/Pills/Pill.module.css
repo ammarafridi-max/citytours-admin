@@ -8,9 +8,9 @@
 }
 
 .success {
-  background-color: #22c55e;
+  background-color: #4ade80; /* Soft green */
 }
 
 .danger {
-  background-color: #dc2626;
+  background-color: #f87171; /* Soft red */
 }

@@ -4,13 +4,21 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import InputGroup from "../../../components/FormElements/InputGroup";
 import SelectGroup from "../../../components/FormElements/SelectGroup";
 import Loading from "../../../components/Loading/Loading";
+import AlertBox from "../../../components/AlertBox/AlertBox";
 import { PrimarySection } from "../../../components/Sections/Sections";
 import { useUsers } from "../useUsers";
 import { useRoles } from "../../roles/useRoles";
 
 export default function CreateUser() {
-  const { isLoading, newUser, setNewUser, statusOptions, handleCreateUser } =
-    useUsers();
+  const {
+    isLoading,
+    newUser,
+    setNewUser,
+    statusOptions,
+    handleCreateUser,
+    showAlertBox,
+    alertBoxTitle,
+  } = useUsers();
   const { roles } = useRoles();
 
   const handleChange = (state) => (e) => {
@@ -34,6 +42,7 @@ export default function CreateUser() {
   return (
     <>
       {isLoading && <Loading />}
+      <AlertBox showAlertBox={showAlertBox}>This is an alert</AlertBox>
 
       <Helmet>
         <title>Create User</title>

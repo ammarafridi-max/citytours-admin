@@ -1,13 +1,7 @@
-import { useState, useRef } from "react";
-import {
-  initialState,
-  statusOptions,
-  useDestinations,
-} from "../useDestinations";
+import { statusOptions, useDestinations } from "../useDestinations";
 import { Helmet } from "react-helmet";
 import { Editor } from "@tinymce/tinymce-react";
 import { createUrl } from "../../../utils/createUrl";
-import { uploadToCloudinary } from "../../../services/destinationServices";
 import { countries } from "../../../utils/countries";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import InputGroup from "../../../components/FormElements/InputGroup";
@@ -21,7 +15,7 @@ export default function DestinationForm() {
     setNewDestinationData,
     editorRef,
     handleCreateDestination,
-  } = useDestinations;
+  } = useDestinations();
 
   const handleChange = (state) => (e) => {
     const value = state === "image" ? e.target.files[0] : e.target.value;

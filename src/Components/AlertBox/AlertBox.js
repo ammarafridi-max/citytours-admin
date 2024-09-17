@@ -1,30 +1,50 @@
 import styles from "./AlertBox.module.css";
-import { IoMdCloseCircle } from "react-icons/io";
-import { useState } from "react";
+import { IoClose } from "react-icons/io5";
+import { useEffect, useState } from "react";
 
-export default function AlertBox({ type, children }) {
-  const [show, setShow] = useState(true);
+export default function AlertBox({ alertBox, children }) {
+  const [show, setShow] = useState(
+    alertBox.showAlertBox ? styles.show : styles.hidden
+  );
 
-  function closeAlertBox() {
-    setShow(false);
-  }
+  useEffect(() => {
+    setShow(alertBox.showAlertBox ? styles.show : styles.hidden);
+    const timer = setTimeout(() => {
+      setShow(styles.hidden);
+    }, 6000);
+
+    return () => clearTimeout(timer);
+  }, [alertBox.showAlertBox]);
+
+  const handleClose = () => {
+    setShow(styles.hidden);
+  };
+
+  const alertTypeClass =
+    alertBox.type === "error"
+      ? styles.error
+      : alertBox.type === "success"
+      ? styles.success
+      : styles.info;
 
   return (
     <>
-      {show && (
+      <div className={`${styles.alertBg} ${show}`} onClick={handleClose}>
         <div
-          className={`row m-0
-          ${styles.AlertBox}
-          ${type === "success" && styles.Success}
-          ${type === "error" && styles.Danger}
-          `}
+          className={`${styles.alertContainer} ${alertTypeClass}`}
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the container
         >
-          <p className={styles.Text}>{children}</p>
-          {/* <div className="col-1 text-end">
-            <IoMdCloseCircle className={styles.Icon} onClick={closeAlertBox} />
-          </div> */}
+          <div className={styles.alertHeader}>
+            <h4 className={styles.alertTitle}>{alertBox.title}</h4>
+            <button className={styles.closeIcon} onClick={handleClose}>
+              <IoClose />
+            </button>
+          </div>
+          <div className={styles.alertBody}>
+            <p>{children || "This is a very important message"}</p>
+          </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

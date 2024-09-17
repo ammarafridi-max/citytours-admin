@@ -7,10 +7,11 @@ import { formatDate } from "../../../utils/formatDate";
 import DeleteIconButton from "../../../components/Buttons/DeleteIconButton";
 import UpdateButton from "../../../components/Buttons/UpdateButton";
 import DeleteModal from "../../../components/DeleteModal/DeleteModal";
+import AlertBox from "../../../components/AlertBox/AlertBox";
 
 export default function ReadUser() {
   const { username } = useParams();
-  const { currentUser, showModal, setShowModal, handleDeleteUser } =
+  const { currentUser, showModal, setShowModal, handleDeleteUser, alertBox } =
     useUsers(username);
 
   return (
@@ -18,6 +19,14 @@ export default function ReadUser() {
       <Helmet>
         <title>Read User</title>
       </Helmet>
+
+      <AlertBox
+        showAlertBox={alertBox.showAlertBox}
+        title={alertBox.title}
+        type={alertBox.type}
+      >
+        {alertBox.message}
+      </AlertBox>
 
       {showModal && (
         <DeleteModal

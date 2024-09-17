@@ -11,6 +11,7 @@ import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import { createUrl } from "../../../utils/createUrl";
 import { Helmet } from "react-helmet";
 import { formatDate } from "../../../utils/formatDate";
+import AlertBox from "../../../components/AlertBox/AlertBox";
 
 export default function UpdateBlog() {
   const { url } = useParams();
@@ -20,6 +21,7 @@ export default function UpdateBlog() {
     setCurrentBlog,
     isLoading,
     editorRef,
+    alertBox,
   } = useBlogs(url);
   const { destinationOptions } = useDestinations();
 
@@ -40,6 +42,7 @@ export default function UpdateBlog() {
   return (
     <>
       {isLoading && <Loading />}
+      <AlertBox alertBox={alertBox}>{alertBox.message}</AlertBox>
       <Helmet>
         <title>{`Update ${currentBlog.title}`}</title>
       </Helmet>

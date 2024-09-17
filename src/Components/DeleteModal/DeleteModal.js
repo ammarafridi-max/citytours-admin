@@ -5,8 +5,8 @@ import styles from "./DeleteModal.module.css";
 
 export default function DeleteModal({ onCancel, onDelete, item }) {
   return (
-    <div className={styles.ModalOverlay}>
-      <div className={styles.Container}>
+    <div className={styles.ModalOverlay} onClick={onCancel}>
+      <div className={styles.Container} onClick={(e) => e.stopPropagation()}>
         <div className={styles.Modal}>
           <MdCancel className={styles.Icon} />
           <p className={styles.Heading}>Confirm deletion</p>

@@ -17,37 +17,39 @@ export default function AllDestinations() {
       {isLoading && <Loading />}
       <h1>Destinations</h1>
 
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>URL</th>
-            <th>Country</th>
-            <th>Active</th>
-          </tr>
-        </thead>
-        <tbody>
-          {destinations.map((destination) => (
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
             <tr>
-              <td>
-                <a href={`destinations/${destination.url}`}>
-                  {destination.name}
-                </a>
-              </td>
-              <td>{destination.url}</td>
-              <td>{destination.country}</td>
-              <td>
-                {destination.status === "Active" && (
-                  <SuccessPill>{destination.status}</SuccessPill>
-                )}
-                {destination.status === "Inactive" && (
-                  <DangerPill>{destination.status}</DangerPill>
-                )}
-              </td>
+              <th>Name</th>
+              <th>URL</th>
+              <th>Country</th>
+              <th>Active</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {destinations.map((destination) => (
+              <tr key={destination.url}>
+                <td>
+                  <a href={`destinations/${destination.url}`}>
+                    {destination.name}
+                  </a>
+                </td>
+                <td>{destination.url}</td>
+                <td>{destination.country}</td>
+                <td>
+                  {destination.status === "Active" && (
+                    <SuccessPill>{destination.status}</SuccessPill>
+                  )}
+                  {destination.status === "Inactive" && (
+                    <DangerPill>{destination.status}</DangerPill>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

@@ -1,56 +1,41 @@
-.table {
-  border: 1px solid rgb(200, 200, 200);
-  table-layout: auto;
-  border-collapse: collapse;
-  border-radius: 20px !important;
+.tableContainer {
   overflow-x: auto;
-  padding: 0;
-  margin-top: 20px;
-  min-width: 1550px;
+  width: 100%;
 }
 
-.table thead {
-  font-weight: 700;
+.styledTable {
+  width: max-content; /* Ensures the table takes up as much space as it needs */
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
 }
 
-.table thead th {
-  padding: 20px 20px;
-  border-bottom: 1px solid rgb(200, 200, 200) !important;
+.styledTable th,
+.styledTable td {
+  border: 1px solid #dddddd;
+  padding: 8px;
   text-align: left;
+  white-space: nowrap; /* Prevents content from wrapping inside the table cells */
 }
 
-.table thead th:nth-of-type(1) {
-  width: 250px;
+.styledTable th {
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
 
-.table thead th:nth-of-type(2) {
-  width: 200px;
+.styledTable tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.table thead th:nth-of-type(3) {
-  width: 300px;
+.styledTable tr:hover {
+  background-color: #f1f1f1;
 }
 
-.table thead th:nth-of-type(4) {
-  width: 200px;
+.styledTable a {
+  color: #1a73e8;
+  text-decoration: none;
 }
 
-.table thead th:nth-of-type(5) {
-  width: 200px;
-}
-
-.table thead th:nth-of-type(6) {
-  width: 200px;
-}
-
-.table thead th:nth-of-type(7) {
-  width: 200px;
-}
-
-.table td {
-  padding: 12.5px 20px;
-}
-
-.table tbody tr:hover {
-  background-color: rgb(240, 240, 240);
+.styledTable a:hover {
+  text-decoration: underline;
 }
